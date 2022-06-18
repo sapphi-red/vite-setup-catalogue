@@ -2,7 +2,7 @@
 
 This repository contains several example of Vite setups.
 
-- `normal`
+- `basic`
 - `middleware-mode`
 - `backend-server`
 - `with-proxy`
