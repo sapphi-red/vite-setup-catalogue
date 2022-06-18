@@ -1,0 +1,3 @@
+:3000
+
+reverse_proxy vite:5173
