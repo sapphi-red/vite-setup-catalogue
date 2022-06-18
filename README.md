@@ -20,6 +20,6 @@ Using Vite with a backend server. See [Backend Integration Guide | Vite](https:/
 ![](/docs-image/backend-server.svg)
 
 ## With Proxy
-Using Vite with a proxy in front.
+Using Vite behind a proxy.
 
 ![](/docs-image/with-proxy.svg)
