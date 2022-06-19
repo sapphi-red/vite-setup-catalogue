@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+
+  vite:
+    image: node:16
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    working_dir: /app
+    command: bash -c "npm i && npm run dev"
+
+volumes:
+  caddy_data:
+    # external: true
+  caddy_config:
+  node_modules:

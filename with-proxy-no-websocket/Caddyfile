@@ -1,0 +1,5 @@
+:3000
+
+reverse_proxy vite:5173 {
+  header_up -Upgrade # disable websocket proxy for test
+}

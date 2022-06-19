@@ -23,3 +23,8 @@ Using Vite with a backend server. See [Backend Integration Guide | Vite](https:/
 Using Vite behind a reverse proxy.
 
 ![](/docs-image/with-proxy.svg)
+
+## With Proxy (No WebSocket)
+Using Vite behind a reverse proxy that does not support proxying websocket.
+
+![](/docs-image/with-proxy-no-websocket.svg)
