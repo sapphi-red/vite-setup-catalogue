@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "serve-static": "^1.15.0",
-    "vite": "^3.0.0-alpha.12"
+    "vite": "^3.0.0-alpha.14"
   },
   "dependencies": {
     "connect": "^3.7.0",
