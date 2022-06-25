@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+  vite:
+    volumes:
+      - ../node_modules:/test-app/node_modules
+      - .:/test-app/with-proxy-no-websocket
+    working_dir: /test-app/with-proxy-no-websocket
+    command: npm run dev

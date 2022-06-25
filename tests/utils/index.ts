@@ -7,6 +7,14 @@ import kill from 'tree-kill'
 import fs from 'fs/promises'
 import { spawn } from 'cross-spawn'
 
+/**
+ * If local machine `node_modules` is mounted to container.
+ * Normally `node_modules` needs to be installed inside container.
+ * But that makes it difficult to use local built dependencies (For example, when you want to use Vite built on the main branch).
+ * This only works when it is running on Linux
+ */
+export const useNodeModulesOutsideContainer = process.env.USE_NODE_MODULES_OUTSIDE_CONTAINER === '1'
+
 export const getWorkspaceFileURL = (directoryName: string) => {
   return new URL(`../../${directoryName}/`, import.meta.url)
 }

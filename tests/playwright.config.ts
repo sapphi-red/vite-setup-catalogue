@@ -1,4 +1,9 @@
 import type { PlaywrightTestConfig } from '@playwright/test'
+import { useNodeModulesOutsideContainer } from './utils/index.js'
+
+if (useNodeModulesOutsideContainer) {
+  console.warn('Warning: Using local node_modules. It only works with linux.')
+}
 
 const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
