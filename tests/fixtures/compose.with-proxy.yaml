@@ -3,7 +3,7 @@ version: "3.7"
 services:
   vite:
     volumes:
-      - ../node_modules:/test-app/node_modules
-      - .:/test-app/with-proxy
-    working_dir: /test-app/with-proxy
+      - ../../node_modules:/repo-root/node_modules
+      - .:/repo-root/examples/with-proxy
+    working_dir: /repo-root/examples/with-proxy
     command: npm run dev

@@ -8,7 +8,7 @@ import {
   ports,
   waitUntilOutput,
   gotoAndWaitForHMRConnection
-} from './utils/index.js'
+} from '../utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('backend-server')
 const accessURL = `http://localhost:${ports.backendServer}/`
