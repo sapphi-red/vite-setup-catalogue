@@ -45,5 +45,10 @@ test('with-proxy-no-websocket test', async ({ page }) => {
 })
 
 test.afterAll(async () => {
+  // cleanup
+  await editFile('./src/main.js', workspaceFileURL, (content) =>
+    content.replace('Vite!!!</h1>', 'Vite!</h1>')
+  )
+
   await dockerComposeProcess.down()
 })
