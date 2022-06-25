@@ -8,10 +8,10 @@ import {
   ports,
   waitUntilOutput,
   gotoAndWaitForHMRConnection
-} from './utils/index.js'
+} from '../utils/index.js'
 
-const workspaceFileURL = getWorkspaceFileURL('middleware-mode')
-const accessURL = `http://localhost:${ports.middlewareMode}/`
+const workspaceFileURL = getWorkspaceFileURL('basic')
+const accessURL = `http://localhost:${ports.basic}/`
 
 let viteDevProcess: ChildProcessWithoutNullStreams
 
@@ -20,17 +20,17 @@ test.beforeAll(async () => {
   await waitUntilOutput(
     viteDevProcess.stdout,
     viteDevProcess.stderr,
-    'Open your browser.'
+    'use --host to expose'
   )
 })
 
-test('middleware-mode test', async ({ page }) => {
+test('basic test', async ({ page }) => {
   await gotoAndWaitForHMRConnection(page, accessURL)
 
   const title = page.locator('h1')
   await expect(title).toHaveText('Hello Vite!')
 
-  await editFile('./src/main.js', workspaceFileURL, (content) =>
+  await editFile('./main.js', workspaceFileURL, (content) =>
     content.replace('Vite!</h1>', 'Vite!!!</h1>')
   )
 
@@ -39,7 +39,7 @@ test('middleware-mode test', async ({ page }) => {
 
 test.afterAll(async () => {
   // cleanup
-  await editFile('./src/main.js', workspaceFileURL, (content) =>
+  await editFile('./main.js', workspaceFileURL, (content) =>
     content.replace('Vite!!!</h1>', 'Vite!</h1>')
   )
 

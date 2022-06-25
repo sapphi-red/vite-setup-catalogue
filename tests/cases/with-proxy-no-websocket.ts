@@ -1,14 +1,14 @@
 import { test, expect } from '@playwright/test'
-import type { DockerComposeProcess } from './utils/index.js'
-import { useNodeModulesOutsideContainer } from './utils/index.js'
-import { runDockerCompose } from './utils/index.js'
+import type { DockerComposeProcess } from '../utils/index.js'
 import {
   editFile,
   getWorkspaceFileURL,
   ports,
   waitUntilOutput,
+  useNodeModulesOutsideContainer,
+  runDockerCompose,
   gotoAndWaitForHMRConnection
-} from './utils/index.js'
+} from '../utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('with-proxy-no-websocket')
 const accessURL = `http://localhost:${ports.withProxyNoWebSocket}/`
