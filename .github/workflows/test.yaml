@@ -54,3 +54,45 @@ jobs:
       - name: Run tests
         run: pnpm run test
         working-directory: tests
+
+  test-local-node-modules:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: install pnpm
+        uses: pnpm/action-setup@v2
+      - name: setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+          cache: pnpm
+      - name: Install deps
+        run: pnpm install
+
+      # Install playwright's binary under custom directory to cache
+      - name: Set Playwright path (non-windows)
+        if: runner.os != 'Windows'
+        run: echo "PLAYWRIGHT_BROWSERS_PATH=$HOME/.cache/playwright-bin" >> $GITHUB_ENV
+      - name: Set Playwright path (windows)
+        if: runner.os == 'Windows'
+        run: echo "PLAYWRIGHT_BROWSERS_PATH=$HOME\.cache\playwright-bin" >> $env:GITHUB_ENV
+
+      - name: Cache Playwright's binary
+        uses: actions/cache@v3
+        with:
+          # Playwright removes unused browsers automatically
+          # So does not need to add playwright version to key
+          key: ${{ runner.os }}-playwright-bin-v1
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+
+      - name: Install Playwright
+        # does not need to explictly set chromium after https://github.com/microsoft/playwright/issues/14862 is solved
+        run: pnpm playwright install chromium
+        working-directory: tests
+
+      - name: Run tests
+        # only run container used tests
+        run: pnpm run test-local-node-modules with-proxy
+        working-directory: tests
