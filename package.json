@@ -1,5 +1,8 @@
 {
   "name": "vite-setup-catalogue-monorepo",
   "private": true,
+  "scripts": {
+    "test-for-ecosystem-ci": "pnpm -F ./tests run test-local-node-modules"
+  },
   "packageManager": "pnpm@7.3.0"
 }
