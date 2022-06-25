@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "scripts": {
     "test": "playwright test",
-    "test-local-node-modules": "USE_NODE_MODULES_OUTSIDE_CONTAINER=1 playwright test",
+    "test-local-node-modules": "cross-env USE_NODE_MODULES_OUTSIDE_CONTAINER=1 playwright test",
     "test-debug": "cross-env DEBUG=1 playwright test"
   },
   "devDependencies": {
