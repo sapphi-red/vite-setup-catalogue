@@ -6,6 +6,7 @@ if (useNodeModulesOutsideContainer) {
 }
 
 const config: PlaywrightTestConfig = {
+  globalSetup: './globalSetup.ts',
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   testDir: 'cases',

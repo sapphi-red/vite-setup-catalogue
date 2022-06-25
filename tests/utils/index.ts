@@ -17,8 +17,10 @@ import type { Page } from '@playwright/test'
 export const useNodeModulesOutsideContainer =
   process.env.USE_NODE_MODULES_OUTSIDE_CONTAINER === '1'
 
+export const tempDirName = '.examples-temp'
+
 export const getWorkspaceFileURL = (directoryName: string) => {
-  return new URL(`../../examples/${directoryName}/`, import.meta.url)
+  return new URL(`../../${tempDirName}/${directoryName}/`, import.meta.url)
 }
 
 export const waitUntilOutput = async (
