@@ -17,7 +17,7 @@ let dockerComposeProcess: DockerComposeProcess
 
 test.beforeAll(async () => {
   const overrideFile = useNodeModulesOutsideContainer
-    ? ' -f ../tests/fixtures/compose.with-proxy.yaml'
+    ? ' -f ../../tests/fixtures/compose.with-proxy.yaml'
     : ''
 
   dockerComposeProcess = runDockerCompose(
