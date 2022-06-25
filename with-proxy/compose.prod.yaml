@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./CaddyfileProd:/etc/caddy/Caddyfile
+      - ./dist:/app
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+    # external: true
+  caddy_config:

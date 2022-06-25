@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./CaddyfileDev:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
 

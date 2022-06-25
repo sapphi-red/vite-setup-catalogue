@@ -1,0 +1,4 @@
+:3000
+
+root * /app
+file_server
