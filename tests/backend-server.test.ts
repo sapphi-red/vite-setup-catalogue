@@ -6,7 +6,8 @@ import {
   getWorkspaceFileURL,
   killProcess,
   ports,
-  waitUntilOutput
+  waitUntilOutput,
+  gotoAndWaitForHMRConnection
 } from './utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('backend-server')
@@ -36,7 +37,8 @@ test.beforeAll(async () => {
 })
 
 test('backend-server test', async ({ page }) => {
-  await page.goto(accessURL)
+  await gotoAndWaitForHMRConnection(page, accessURL)
+
   const title = page.locator('h1')
   await expect(title).toHaveText('Hello Vite!')
 

@@ -6,7 +6,8 @@ import {
   editFile,
   getWorkspaceFileURL,
   ports,
-  waitUntilOutput
+  waitUntilOutput,
+  gotoAndWaitForHMRConnection
 } from './utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('with-proxy')
@@ -31,7 +32,8 @@ test.beforeAll(async () => {
 })
 
 test('with-proxy test', async ({ page }) => {
-  await page.goto(accessURL)
+  await gotoAndWaitForHMRConnection(page, accessURL)
+
   const title = page.locator('h1')
   await expect(title).toHaveText('Hello Vite!')
 
