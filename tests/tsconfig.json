@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "lib": ["ESNext"],
+    "declaration": true,
+    "sourceMap": true,
+    "rootDir": ".",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "importsNotUsedAsValues": "error",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  }
+}

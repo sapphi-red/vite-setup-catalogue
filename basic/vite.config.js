@@ -5,8 +5,7 @@ dns.setDefaultResultOrder('verbatim')
 
 export default defineConfig({
   server: {
-    host: true,
-    port: 5193,
+    port: 5173,
     strictPort: true
   }
 })

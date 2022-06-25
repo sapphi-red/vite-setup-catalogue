@@ -3,6 +3,9 @@ import serveStatic from 'serve-static'
 import fs from 'fs/promises'
 import url from 'url'
 import ejs from 'ejs'
+import dns from 'dns'
+
+dns.setDefaultResultOrder('verbatim')
 
 const isDev = process.env.DEV === '1'
 
@@ -13,7 +16,7 @@ const entrypoint = 'frontend-src/main.js'
 let viteInject
 if (isDev) {
   viteInject = `
-    <script type="module" src="http://localhost:5173/${entrypoint}"></script>
+    <script type="module" src="http://localhost:5183/${entrypoint}"></script>
   `
 } else {
   const manifest = JSON.parse(
@@ -69,5 +72,6 @@ connect.use(async (req, res, next) => {
 const server = connect.listen(3000, 'localhost')
 server.on('listening', () => {
   const addr = server.address()
-  console.log(`Listening on http://${addr.address}:${addr.port}`)
+  console.log(`Listening on http://localhost:${addr.port}`)
+  console.log('Open your browser.')
 })
