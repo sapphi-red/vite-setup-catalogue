@@ -18,7 +18,7 @@ export const useNodeModulesOutsideContainer =
   process.env.USE_NODE_MODULES_OUTSIDE_CONTAINER === '1'
 
 export const getWorkspaceFileURL = (directoryName: string) => {
-  return new URL(`../../${directoryName}/`, import.meta.url)
+  return new URL(`../../examples/${directoryName}/`, import.meta.url)
 }
 
 export const waitUntilOutput = async (

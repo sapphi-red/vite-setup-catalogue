@@ -5,7 +5,7 @@ importers:
   .:
     specifiers: {}
 
-  backend-server:
+  examples/backend-server:
     specifiers:
       connect: ^3.7.0
       cross-env: ^7.0.3
@@ -22,18 +22,30 @@ importers:
       npm-run-all: 4.1.5
       vite: 3.0.0-beta.2
 
-  basic:
+  examples/basic:
     specifiers:
       vite: ^3.0.0-beta.2
     devDependencies:
       vite: 3.0.0-beta.2
 
-  middleware-mode:
+  examples/middleware-mode:
     specifiers:
       connect: ^3.7.0
       vite: ^3.0.0-beta.2
     devDependencies:
       connect: 3.7.0
+      vite: 3.0.0-beta.2
+
+  examples/with-proxy:
+    specifiers:
+      vite: ^3.0.0-beta.2
+    devDependencies:
+      vite: 3.0.0-beta.2
+
+  examples/with-proxy-no-websocket:
+    specifiers:
+      vite: ^3.0.0-beta.2
+    devDependencies:
       vite: 3.0.0-beta.2
 
   tests:
@@ -57,18 +69,6 @@ importers:
       strip-ansi: 7.0.1
       tree-kill: 1.2.2
       typescript: 4.7.4
-
-  with-proxy:
-    specifiers:
-      vite: ^3.0.0-beta.2
-    devDependencies:
-      vite: 3.0.0-beta.2
-
-  with-proxy-no-websocket:
-    specifiers:
-      vite: ^3.0.0-beta.2
-    devDependencies:
-      vite: 3.0.0-beta.2
 
 packages:
 

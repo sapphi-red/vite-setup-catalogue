@@ -17,7 +17,7 @@ let dockerComposeProcess: DockerComposeProcess
 
 test.beforeAll(async () => {
   const overrideFile = useNodeModulesOutsideContainer
-    ? ' -f ../tests/fixtures/compose.with-proxy-no-websocket.yaml'
+    ? ' -f ../../tests/fixtures/compose.with-proxy-no-websocket.yaml'
     : ''
 
   dockerComposeProcess = runDockerCompose(
