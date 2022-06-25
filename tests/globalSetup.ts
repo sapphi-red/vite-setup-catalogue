@@ -14,8 +14,8 @@ const addPollingToConfig = (content: string) => {
 const pollingConfig = config => {
   config.server ??= {}
   config.server.watch ??= {}
-  config.server.usePolling = true
-  config.server.interval = 100
+  config.server.watch.usePolling = true
+  config.server.watch.interval = 100
   return config
 }
 export default pollingConfig($1)
