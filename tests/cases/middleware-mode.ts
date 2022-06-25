@@ -38,11 +38,6 @@ test('middleware-mode test', async ({ page }) => {
 })
 
 test.afterAll(async () => {
-  // cleanup
-  await editFile('./src/main.js', workspaceFileURL, (content) =>
-    content.replace('Vite!!!</h1>', 'Vite!</h1>')
-  )
-
   try {
     await killProcess(viteDevProcess)
   } catch {}
