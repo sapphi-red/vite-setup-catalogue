@@ -31,7 +31,6 @@ test.beforeAll(async () => {
 })
 
 test('with-proxy test', async ({ page }) => {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
   await page.goto(accessURL)
   const title = page.locator('h1')
   await expect(title).toHaveText('Hello Vite!')
