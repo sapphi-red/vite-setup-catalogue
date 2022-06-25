@@ -88,7 +88,7 @@ export const runDockerCompose = (
   options: string,
   cwd: string | URL
 ): DockerComposeProcess => {
-  const process = spawn('docker', `compose ${options} up`.split(' '), { cwd })
+  const process = spawn('docker', `compose ${options} up --abort-on-container-exit`.split(' '), { cwd })
 
   return {
     process,

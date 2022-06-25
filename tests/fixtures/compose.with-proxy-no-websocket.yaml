@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
   vite:
+    restart: 'no'
     volumes:
       - ../../node_modules:/repo-root/node_modules
       - .:/repo-root/examples/with-proxy-no-websocket
