@@ -6,6 +6,7 @@ import stripAnsi from 'strip-ansi'
 import kill from 'tree-kill'
 import fs from 'fs/promises'
 import { spawn } from 'cross-spawn'
+import type { Page } from '@playwright/test'
 
 /**
  * If local machine `node_modules` is mounted to container.
@@ -13,7 +14,8 @@ import { spawn } from 'cross-spawn'
  * But that makes it difficult to use local built dependencies (For example, when you want to use Vite built on the main branch).
  * This only works when it is running on Linux
  */
-export const useNodeModulesOutsideContainer = process.env.USE_NODE_MODULES_OUTSIDE_CONTAINER === '1'
+export const useNodeModulesOutsideContainer =
+  process.env.USE_NODE_MODULES_OUTSIDE_CONTAINER === '1'
 
 export const getWorkspaceFileURL = (directoryName: string) => {
   return new URL(`../../${directoryName}/`, import.meta.url)
@@ -48,6 +50,29 @@ export const waitUntilOutput = async (
       match
     )}. Output:\n${stripAnsi(out)}\nError Output:\n${stripAnsi(err)}`
   )
+}
+
+type GotoOptions = Parameters<Page['goto']>[1]
+
+export const gotoAndWaitForHMRConnection = async (
+  page: Page,
+  url: string,
+  options?: GotoOptions
+) => {
+  const gotoPromise = page.goto(url, options)
+  const [res] = await Promise.all([
+    gotoPromise,
+    waitForHMRConnection(page, options?.timeout)
+  ])
+  return res
+}
+
+const waitForHMRConnection = (page: Page, timeout?: number) => {
+  return page.waitForEvent('console', {
+    predicate: (msg) =>
+      msg.type() === 'debug' && msg.text() === '[vite] connected.',
+    timeout
+  })
 }
 
 export type DockerComposeProcess = {
