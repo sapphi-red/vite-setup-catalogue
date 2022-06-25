@@ -1,5 +1,5 @@
 import type { PlaywrightTestConfig } from '@playwright/test'
-import { useNodeModulesOutsideContainer } from './utils/index.js'
+import { useNodeModulesOutsideContainer, isDebug } from './utils/index.js'
 
 if (useNodeModulesOutsideContainer) {
   console.warn('Warning: Using local node_modules. It only works with linux.')
@@ -13,7 +13,7 @@ const config: PlaywrightTestConfig = {
   testDir: 'cases',
   testMatch: '**/*.ts',
   use: {
-    headless: process.env.DEBUG !== '1'
+    headless: !isDebug
   }
 }
 export default config

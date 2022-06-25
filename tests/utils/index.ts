@@ -8,6 +8,8 @@ import fs from 'fs/promises'
 import { spawn } from 'cross-spawn'
 import type { Page } from '@playwright/test'
 
+export const isDebug = process.env.DEBUG === '1'
+
 /**
  * If local machine `node_modules` is mounted to container.
  * Normally `node_modules` needs to be installed inside container.
