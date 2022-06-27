@@ -34,3 +34,12 @@ const setHmrPortFromPortPlugin = {
   }
 }
 ```
+
+You could use this plugin like this:
+```js
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [setHmrPortFromPortPlugin]
+})
+```
