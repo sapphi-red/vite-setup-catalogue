@@ -32,7 +32,7 @@ test.beforeAll(async () => {
 })
 
 test('with-proxy-no-websocket test', async ({ page }) => {
-  await gotoAndWaitForHMRConnection(page, accessURL)
+  await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 10000 })
 
   const title = page.locator('h1')
   await expect(title).toHaveText('Hello Vite!')
