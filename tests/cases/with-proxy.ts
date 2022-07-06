@@ -7,7 +7,8 @@ import {
   waitUntilOutput,
   useNodeModulesOutsideContainer,
   runDockerCompose,
-  gotoAndWaitForHMRConnection
+  gotoAndWaitForHMRConnection,
+  outputError
 } from '../utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('with-proxy')
@@ -32,6 +33,7 @@ test.beforeAll(async () => {
 })
 
 test('with-proxy test', async ({ page }) => {
+  outputError(page)
   await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 10000 })
 
   const title = page.locator('h1')

@@ -7,7 +7,8 @@ import {
   killProcess,
   ports,
   waitUntilOutput,
-  gotoAndWaitForHMRConnection
+  gotoAndWaitForHMRConnection,
+  outputError
 } from '../utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('basic')
@@ -25,6 +26,7 @@ test.beforeAll(async () => {
 })
 
 test('basic test', async ({ page }) => {
+  outputError(page)
   await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 10000 })
 
   const title = page.locator('h1')

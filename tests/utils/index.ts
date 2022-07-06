@@ -56,6 +56,14 @@ export const waitUntilOutput = async (
   )
 }
 
+export const outputError = (page: Page) => {
+  page.on('console', msg => {
+    if (msg.type() === 'error') {
+      console.warn(`[Browser error] ${msg.text()}`)
+    }
+  })
+}
+
 type GotoOptions = Parameters<Page['goto']>[1]
 
 export const gotoAndWaitForHMRConnection = async (
