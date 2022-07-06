@@ -63,10 +63,9 @@ export const gotoAndWaitForHMRConnection = async (
   url: string,
   options?: GotoOptions
 ) => {
-  const gotoPromise = page.goto(url, options)
   const [res] = await Promise.all([
-    gotoPromise,
-    waitForHMRConnection(page, options?.timeout)
+    waitForHMRConnection(page, options?.timeout),
+    page.goto(url, options)
   ])
   return res
 }
