@@ -63,7 +63,7 @@ export const gotoAndWaitForHMRConnection = async (
   url: string,
   options?: GotoOptions
 ) => {
-  const [res] = await Promise.all([
+  const [, res] = await Promise.all([
     waitForHMRConnection(page, options?.timeout),
     page.goto(url, options)
   ])
@@ -87,7 +87,11 @@ export const runDockerCompose = (
   options: string,
   cwd: string | URL
 ): DockerComposeProcess => {
-  const process = spawn('docker', `compose ${options} up --abort-on-container-exit`.split(' '), { cwd })
+  const process = spawn(
+    'docker',
+    `compose ${options} up --abort-on-container-exit`.split(' '),
+    { cwd }
+  )
 
   return {
     process,
