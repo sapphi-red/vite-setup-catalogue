@@ -1,6 +1,10 @@
 import type { FullConfig } from '@playwright/test'
 import fs from 'fs/promises'
-import { tempDirName, editFile } from './utils/index.js'
+import {
+  useNodeModulesOutsideContainer,
+  tempDirName,
+  editFile
+} from './utils/index.js'
 import fsExtra from 'fs-extra'
 import url from 'url'
 
@@ -24,6 +28,10 @@ export default pollingConfig($1)
 }
 
 async function globalSetup(_config: FullConfig) {
+  if (useNodeModulesOutsideContainer) {
+    console.warn('Warning: Using local node_modules. It only works with linux.')
+  }
+
   const src = new URL('../examples/', import.meta.url)
   const dest = new URL(`../${tempDirName}/`, import.meta.url)
 

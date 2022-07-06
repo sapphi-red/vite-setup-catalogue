@@ -1,9 +1,5 @@
 import type { PlaywrightTestConfig } from '@playwright/test'
-import { useNodeModulesOutsideContainer, isDebug } from './utils/index.js'
-
-if (useNodeModulesOutsideContainer) {
-  console.warn('Warning: Using local node_modules. It only works with linux.')
-}
+import { isDebug } from './utils/index.js'
 
 const config: PlaywrightTestConfig = {
   globalSetup: './globalSetup.ts',
