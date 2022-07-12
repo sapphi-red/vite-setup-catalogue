@@ -1,12 +1,13 @@
 # Middleware Mode
 
-## dev
+## Commands
+### dev
 ```shell
 npm run dev
 ```
 
-## build
+### build
 Not implemented.
 
-## preview
+### preview
 Not implemented.

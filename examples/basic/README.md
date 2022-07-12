@@ -1,16 +1,17 @@
 # Basic
 
-## dev
+## Commands
+### dev
 ```shell
 npm run dev
 ```
 
-## build
+### build
 ```shell
 npm run build
 ```
 
-## preview
+### preview
 ```shell
 npm run preview
 ```
