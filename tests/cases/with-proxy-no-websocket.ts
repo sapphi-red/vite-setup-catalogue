@@ -29,7 +29,7 @@ test.beforeAll(async () => {
     dockerComposeProcess.stdout,
     dockerComposeProcess.stderr,
     'Network:',
-    { timeout: 60000 }
+    { timeout: useNodeModulesOutsideContainer ? undefined : 120000 }
   )
   await new Promise(resolve => setTimeout(resolve, 1000))
 })
