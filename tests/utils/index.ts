@@ -7,6 +7,7 @@ import kill from 'tree-kill'
 import fs from 'fs/promises'
 import { spawn } from 'cross-spawn'
 import type { Page } from '@playwright/test'
+import { expect } from '@playwright/test'
 
 export const isDebug = process.env.DEBUG === '1'
 
@@ -25,7 +26,7 @@ export const getWorkspaceFileURL = (directoryName: string) => {
   return new URL(`../../${tempDirName}/${directoryName}/`, import.meta.url)
 }
 
-const collectOutput = (readable: NodeJS.ReadableStream) => {
+const collectOutput = (readable: NodeJS.ReadableStream): CollectedOutput => {
   let result = { total: '' }
   ;(async () => {
     for await (const chunk of readable) {
@@ -35,36 +36,33 @@ const collectOutput = (readable: NodeJS.ReadableStream) => {
   return result
 }
 
-type ReadableStreamWithCurrent = {
-  current: { total: string }
-  stream: NodeJS.ReadableStream
-}
-export const waitUntilOutput = async (
-  stdout: ReadableStreamWithCurrent,
-  stderr: ReadableStreamWithCurrent,
-  match: string | string[]
+export const collectAndWaitUntilOutput = async (
+  stdout: NodeJS.ReadableStream,
+  stderr: NodeJS.ReadableStream,
+  match: string | RegExp
 ) => {
-  const m = Array.isArray(match) ? match : [match]
+  const stdoutC = collectOutput(stdout)
+  const stderrC = collectOutput(stderr)
+  await waitUntilOutput(stdoutC, stderrC, match)
+}
 
-  const text = stripAnsi(stdout.current.total)
-  if (m.every((v) => text.includes(v))) {
-    return text
+type CollectedOutput = { total: string }
+
+export const waitUntilOutput = async (
+  stdout: CollectedOutput,
+  stderr: CollectedOutput,
+  match: string | RegExp
+) => {
+  try {
+    await expect.poll(() => stripAnsi(stdout.total)).toMatch(match)
+  } catch (e) {
+    throw new Error(
+      `${e}\n` +
+        `Expected output not found. Output:\n${stripAnsi(
+          stdout.total
+        )}\nError Output:\n${stripAnsi(stderr.total)}`
+    )
   }
-
-  for await (const _ of stdout.stream) {
-    const text = stripAnsi(stdout.current.total)
-    if (m.every((v) => text.includes(v))) {
-      return text
-    }
-  }
-
-  throw new Error(
-    `Expected output not found. Expected: ${JSON.stringify(
-      match
-    )}. Output:\n${stripAnsi(stdout.current.total)}\nError Output:\n${stripAnsi(
-      stderr.current.total
-    )}`
-  )
 }
 
 export const outputError = (page: Page) => {
@@ -99,8 +97,8 @@ export const waitForHMRConnection = (page: Page, timeout?: number) => {
 
 export type DockerComposeProcess = {
   process: ChildProcessWithoutNullStreams
-  stdout: ReadableStreamWithCurrent
-  stderr: ReadableStreamWithCurrent
+  stdout: CollectedOutput
+  stderr: CollectedOutput
   down: () => Promise<void>
 }
 
@@ -116,8 +114,8 @@ export const runDockerCompose = (
 
   return {
     process,
-    stdout: { current: collectOutput(process.stdout), stream: process.stdout },
-    stderr: { current: collectOutput(process.stderr), stream: process.stderr },
+    stdout: collectOutput(process.stdout),
+    stderr: collectOutput(process.stderr),
     down: async () => {
       process.kill()
 

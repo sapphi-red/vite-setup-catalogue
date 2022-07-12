@@ -6,7 +6,7 @@ import {
   getWorkspaceFileURL,
   killProcess,
   ports,
-  waitUntilOutput,
+  collectAndWaitUntilOutput,
   gotoAndWaitForHMRConnection,
   outputError
 } from '../utils/index.js'
@@ -24,12 +24,12 @@ test.beforeAll(async () => {
     cwd: workspaceFileURL
   })
   await Promise.all([
-    waitUntilOutput(
+    collectAndWaitUntilOutput(
       viteDevProcess.stdout,
       viteDevProcess.stderr,
       'use --host to expose'
     ),
-    waitUntilOutput(
+    collectAndWaitUntilOutput(
       backendProcess.stdout,
       backendProcess.stderr,
       'Open your browser.'
