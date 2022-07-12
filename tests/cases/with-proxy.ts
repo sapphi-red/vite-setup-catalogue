@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import type { DockerComposeProcess } from '../utils/index.js'
+import type { Page } from '@playwright/test'
 import {
   editFile,
   getWorkspaceFileURL,
@@ -14,14 +14,12 @@ import {
 const workspaceFileURL = getWorkspaceFileURL('with-proxy')
 const accessURL = `http://localhost:${ports.withProxy}/`
 
-let dockerComposeProcess: DockerComposeProcess
-
-test.beforeAll(async () => {
+const startVite = async () => {
   const overrideFile = useNodeModulesOutsideContainer
     ? ' -f ../../tests/fixtures/compose.with-proxy.yaml'
     : ''
 
-  dockerComposeProcess = runDockerCompose(
+  const dockerComposeProcess = runDockerCompose(
     `-p with-proxy-dev -f compose.dev.yaml${overrideFile}`,
     workspaceFileURL
   )
@@ -31,20 +29,55 @@ test.beforeAll(async () => {
     'Network:',
     { timeout: 20000 }
   )
+
+  return async () => {
+    await dockerComposeProcess.down()
+  }
+}
+
+const setupAndGotoPage = async (page: Page) => {
+  outputError(page)
+  await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 1000 })
+}
+
+test('hmr test', async ({ page }) => {
+  const finishVite = await startVite()
+  try {
+    await setupAndGotoPage(page)
+
+    const title = page.locator('h1')
+    await expect(title).toHaveText('Hello Vite!')
+
+    await editFile('./src/main.js', workspaceFileURL, (content) =>
+      content.replace('Vite!</h1>', 'Vite!!!</h1>')
+    )
+
+    await expect(title).toHaveText('Hello Vite!!!')
+  } finally {
+    await finishVite()
+  }
 })
 
-test('with-proxy test', async ({ page }) => {
-  outputError(page)
-  await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 10000 })
+test('restart test', async ({ page }) => {
+  let finishVite1: (() => Promise<void>) | undefined
+  let finishVite2: (() => Promise<void>) | undefined
 
-  const title = page.locator('h1')
-  await expect(title).toHaveText('Hello Vite!')
+  try {
+    finishVite1 = await startVite()
+    await setupAndGotoPage(page)
 
-  await editFile('./src/main.js', workspaceFileURL, (content) =>
-    content.replace('Vite!</h1>', 'Vite!!!</h1>')
-  )
+    const navigationPromise = page.waitForNavigation()
 
-  await expect(title).toHaveText('Hello Vite!!!')
+    await finishVite1()
+    finishVite1 = undefined
+
+    finishVite2 = await startVite()
+
+    await navigationPromise
+  } finally {
+    await finishVite1?.()
+    await finishVite2?.()
+  }
 })
 
 test.afterAll(async ({}, testInfo) => {
@@ -56,6 +89,4 @@ test.afterAll(async ({}, testInfo) => {
   await editFile('./src/main.js', workspaceFileURL, (content) =>
     content.replace('Vite!!!</h1>', 'Vite!</h1>')
   )
-
-  await dockerComposeProcess.down()
 })

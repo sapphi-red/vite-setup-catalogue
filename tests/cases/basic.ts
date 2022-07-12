@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import type { ChildProcessWithoutNullStreams } from 'child_process'
+import type { Page } from '@playwright/test'
 import { spawn } from 'cross-spawn'
 import {
   editFile,
@@ -14,29 +14,65 @@ import {
 const workspaceFileURL = getWorkspaceFileURL('basic')
 const accessURL = `http://localhost:${ports.basic}/`
 
-let viteDevProcess: ChildProcessWithoutNullStreams
-
-test.beforeAll(async () => {
-  viteDevProcess = spawn('pnpm', ['run', 'dev'], { cwd: workspaceFileURL })
+const startVite = async () => {
+  const viteDevProcess = spawn('pnpm', ['run', 'dev'], {
+    cwd: workspaceFileURL
+  })
   await collectAndWaitUntilOutput(
     viteDevProcess.stdout,
     viteDevProcess.stderr,
     'use --host to expose'
   )
-})
+  return async () => {
+    try {
+      await killProcess(viteDevProcess)
+    } catch {}
+  }
+}
 
-test('basic test', async ({ page }) => {
+const setupAndGotoPage = async (page: Page) => {
   outputError(page)
   await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 10000 })
+}
 
-  const title = page.locator('h1')
-  await expect(title).toHaveText('Hello Vite!')
+test('hmr test', async ({ page }) => {
+  const finishVite = await startVite()
+  try {
+    await setupAndGotoPage(page)
 
-  await editFile('./main.js', workspaceFileURL, (content) =>
-    content.replace('Vite!</h1>', 'Vite!!!</h1>')
-  )
+    const title = page.locator('h1')
+    await expect(title).toHaveText('Hello Vite!')
 
-  await expect(title).toHaveText('Hello Vite!!!')
+    await editFile('./main.js', workspaceFileURL, (content) =>
+      content.replace('Vite!</h1>', 'Vite!!!</h1>')
+    )
+
+    await expect(title).toHaveText('Hello Vite!!!')
+  } finally {
+    await finishVite()
+  }
+})
+
+test('restart test', async ({ page }) => {
+  let finishVite1: (() => Promise<void>) | undefined
+  let finishVite2: (() => Promise<void>) | undefined
+
+  try {
+    finishVite1 = await startVite()
+    await setupAndGotoPage(page)
+
+    const navigationPromise = page.waitForNavigation()
+
+    await finishVite1()
+    finishVite1 = undefined
+
+    finishVite2 = await startVite()
+
+    await navigationPromise
+  } finally {
+    await finishVite1?.()
+    await finishVite2?.()
+  }
 })
 
 test.afterAll(async () => {
@@ -44,8 +80,4 @@ test.afterAll(async () => {
   await editFile('./main.js', workspaceFileURL, (content) =>
     content.replace('Vite!!!</h1>', 'Vite!</h1>')
   )
-
-  try {
-    await killProcess(viteDevProcess)
-  } catch {}
 })
