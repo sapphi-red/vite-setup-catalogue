@@ -29,14 +29,13 @@ test.beforeAll(async () => {
     dockerComposeProcess.stdout,
     dockerComposeProcess.stderr,
     'Network:',
-    { timeout: useNodeModulesOutsideContainer ? undefined : 120000 }
+    { timeout: useNodeModulesOutsideContainer ? 15000 : 120000 }
   )
-  await new Promise(resolve => setTimeout(resolve, 1000))
 })
 
 test('with-proxy-no-websocket test', async ({ page }) => {
   outputError(page)
-  await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 10000 })
+  await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 15000 })
 
   const title = page.locator('h1')
   await expect(title).toHaveText('Hello Vite!')
