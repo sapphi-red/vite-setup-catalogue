@@ -29,7 +29,7 @@ test.beforeAll(async () => {
     dockerComposeProcess.stdout,
     dockerComposeProcess.stderr,
     'Network:',
-    { timeout: 10000 }
+    { timeout: 20000 }
   )
 })
 
