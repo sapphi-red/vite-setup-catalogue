@@ -25,25 +25,34 @@ export const getWorkspaceFileURL = (directoryName: string) => {
   return new URL(`../../${tempDirName}/${directoryName}/`, import.meta.url)
 }
 
-export const waitUntilOutput = async (
-  stdout: NodeJS.ReadableStream,
-  stderr: NodeJS.ReadableStream,
-  match: string | string[]
-) => {
-  let out = ''
-  let err = ''
-  const m = Array.isArray(match) ? match : [match]
-
+const collectOutput = (readable: NodeJS.ReadableStream) => {
+  let result = { total: '' }
   ;(async () => {
-    for await (const chunk of stderr) {
-      err += chunk
+    for await (const chunk of readable) {
+      result.total += chunk
     }
   })()
+  return result
+}
 
-  for await (const chunk of stdout) {
-    out += chunk
+type ReadableStreamWithCurrent = {
+  current: { total: string }
+  stream: NodeJS.ReadableStream
+}
+export const waitUntilOutput = async (
+  stdout: ReadableStreamWithCurrent,
+  stderr: ReadableStreamWithCurrent,
+  match: string | string[]
+) => {
+  const m = Array.isArray(match) ? match : [match]
 
-    const text = stripAnsi(out)
+  const text = stripAnsi(stdout.current.total)
+  if (m.every((v) => text.includes(v))) {
+    return text
+  }
+
+  for await (const _ of stdout.stream) {
+    const text = stripAnsi(stdout.current.total)
     if (m.every((v) => text.includes(v))) {
       return text
     }
@@ -52,12 +61,14 @@ export const waitUntilOutput = async (
   throw new Error(
     `Expected output not found. Expected: ${JSON.stringify(
       match
-    )}. Output:\n${stripAnsi(out)}\nError Output:\n${stripAnsi(err)}`
+    )}. Output:\n${stripAnsi(stdout.current.total)}\nError Output:\n${stripAnsi(
+      stderr.current.total
+    )}`
   )
 }
 
 export const outputError = (page: Page) => {
-  page.on('console', msg => {
+  page.on('console', (msg) => {
     if (msg.type() === 'error') {
       console.warn(`[Browser error] ${msg.text()}`)
     }
@@ -88,6 +99,8 @@ export const waitForHMRConnection = (page: Page, timeout?: number) => {
 
 export type DockerComposeProcess = {
   process: ChildProcessWithoutNullStreams
+  stdout: ReadableStreamWithCurrent
+  stderr: ReadableStreamWithCurrent
   down: () => Promise<void>
 }
 
@@ -103,6 +116,8 @@ export const runDockerCompose = (
 
   return {
     process,
+    stdout: { current: collectOutput(process.stdout), stream: process.stdout },
+    stderr: { current: collectOutput(process.stderr), stream: process.stderr },
     down: async () => {
       process.kill()
 

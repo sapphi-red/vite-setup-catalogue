@@ -26,8 +26,8 @@ test.beforeAll(async () => {
     workspaceFileURL
   )
   await waitUntilOutput(
-    dockerComposeProcess.process.stdout,
-    dockerComposeProcess.process.stderr,
+    dockerComposeProcess.stdout,
+    dockerComposeProcess.stderr,
     'Network:'
   )
   await new Promise(resolve => setTimeout(resolve, 1000))
