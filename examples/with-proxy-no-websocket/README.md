@@ -14,6 +14,8 @@ See ["With Proxy"](https://github.com/sapphi-red/vite-setup-catalogue/tree/main/
 
 ## Notes
 
+See ["With Proxy"](https://github.com/sapphi-red/vite-setup-catalogue/tree/main/examples/with-proxy/README.md#notes), too.
+
 ### "Set `server.hmr.port` from `server.port`" plugin
 This plugin sets `server.hmr.port` as the same value with `server.port`.
 This might be useful when:
