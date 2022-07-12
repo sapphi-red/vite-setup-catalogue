@@ -8,6 +8,7 @@ import fs from 'fs/promises'
 import { spawn } from 'cross-spawn'
 import type { Page } from '@playwright/test'
 import { expect } from '@playwright/test'
+import process from 'process'
 
 export const isDebug = process.env.DEBUG === '1'
 
@@ -56,9 +57,7 @@ export const waitUntilOutput = async (
   options?: { intervals?: number[]; timeout?: number }
 ) => {
   try {
-    await expect
-      .poll(() => stripAnsi(stdout.total), options)
-      .toMatch(match)
+    await expect.poll(() => stripAnsi(stdout.total), options).toMatch(match)
   } catch (e) {
     throw new Error(
       `${e}\n` +
@@ -111,17 +110,23 @@ export const runDockerCompose = (
   options: string,
   cwd: string | URL
 ): DockerComposeProcess => {
-  const process = spawn(
+  const p = spawn(
     'docker',
     `compose ${options} up --abort-on-container-exit`.split(' '),
-    { cwd }
+    {
+      cwd,
+      env:
+        process.platform === 'win32'
+          ? undefined
+          : { UID: process.env.UID, GID: process.env.GID }
+    }
   )
 
-  const stdout =collectOutput(process.stdout)
-  const stderr =collectOutput(process.stderr)
+  const stdout = collectOutput(p.stdout)
+  const stderr = collectOutput(p.stderr)
 
   return {
-    process,
+    process: p,
     stdout,
     stderr,
     printLogs: () => {
@@ -134,7 +139,7 @@ export const runDockerCompose = (
       console.log('------')
     },
     down: async () => {
-      process.kill()
+      p.kill()
 
       const downProcess = spawn(
         'docker',
