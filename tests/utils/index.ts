@@ -103,6 +103,7 @@ export type DockerComposeProcess = {
   process: ChildProcessWithoutNullStreams
   stdout: CollectedOutput
   stderr: CollectedOutput
+  printLogs: () => void
   down: () => Promise<void>
 }
 
@@ -116,10 +117,22 @@ export const runDockerCompose = (
     { cwd }
   )
 
+  const stdout =collectOutput(process.stdout)
+  const stderr =collectOutput(process.stderr)
+
   return {
     process,
-    stdout: collectOutput(process.stdout),
-    stderr: collectOutput(process.stderr),
+    stdout,
+    stderr,
+    printLogs: () => {
+      console.log('------')
+      console.log('Docker compose stdout:')
+      console.log(stripAnsi(stdout.total))
+      console.log('------')
+      console.log('Docker compose stderr:')
+      console.log(stripAnsi(stderr.total))
+      console.log('------')
+    },
     down: async () => {
       process.kill()
 
