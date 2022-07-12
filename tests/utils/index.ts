@@ -7,7 +7,6 @@ import kill from 'tree-kill'
 import fs from 'fs/promises'
 import { spawn } from 'cross-spawn'
 import type { Page } from '@playwright/test'
-import type { Readable } from 'stream'
 
 export const isDebug = process.env.DEBUG === '1'
 
@@ -87,23 +86,8 @@ export const waitForHMRConnection = (page: Page, timeout?: number) => {
   })
 }
 
-const readableCollector = (readable: Readable) => {
-  const result = {
-    output: ''
-  }
-
-  ;(async () => {
-    for await (const data of readable) {
-      result.output += data
-    }
-  })()
-
-  return result
-}
-
 export type DockerComposeProcess = {
   process: ChildProcessWithoutNullStreams
-  printLogs: () => void
   down: () => Promise<void>
 }
 
@@ -111,27 +95,14 @@ export const runDockerCompose = (
   options: string,
   cwd: string | URL
 ): DockerComposeProcess => {
-
   const process = spawn(
     'docker',
     `compose ${options} up --abort-on-container-exit`.split(' '),
     { cwd }
   )
 
-  let stdout = readableCollector(process.stdout)
-  let stderr = readableCollector(process.stderr)
-
   return {
     process,
-    printLogs: () => {
-      console.log('------')
-      console.log('Docker compose stdout:')
-      console.log(stdout.output)
-      console.log('------')
-      console.log('Docker compose stderr:')
-      console.log(stderr.output)
-      console.log('------')
-    },
     down: async () => {
       process.kill()
 
