@@ -78,10 +78,10 @@ export const gotoAndWaitForHMRConnection = async (
   return res
 }
 
-const waitForHMRConnection = (page: Page, timeout?: number) => {
+export const waitForHMRConnection = (page: Page, timeout?: number) => {
   return page.waitForEvent('console', {
-    predicate: (msg) =>
-      msg.type() === 'debug' && msg.text() === '[vite] connected.',
+    // sometime the `msg.type()` is 'log', most time it is 'debug'
+    predicate: (msg) => msg.text() === '[vite] connected.',
     timeout
   })
 }
