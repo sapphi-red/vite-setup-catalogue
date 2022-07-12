@@ -47,7 +47,7 @@ test('with-proxy-no-websocket test', async ({ page }) => {
   await expect(title).toHaveText('Hello Vite!!!')
 })
 
-test.afterAll(async (_args, testInfo) => {
+test.afterAll(async ({}, testInfo) => {
   if (testInfo.errors.length > 0) {
     dockerComposeProcess.printLogs()
   }
