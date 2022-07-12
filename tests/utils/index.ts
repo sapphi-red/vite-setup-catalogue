@@ -39,11 +39,12 @@ const collectOutput = (readable: NodeJS.ReadableStream): CollectedOutput => {
 export const collectAndWaitUntilOutput = async (
   stdout: NodeJS.ReadableStream,
   stderr: NodeJS.ReadableStream,
-  match: string | RegExp
+  match: string | RegExp,
+  options?: { intervals?: number[]; timeout?: number }
 ) => {
   const stdoutC = collectOutput(stdout)
   const stderrC = collectOutput(stderr)
-  await waitUntilOutput(stdoutC, stderrC, match)
+  await waitUntilOutput(stdoutC, stderrC, match, options)
 }
 
 type CollectedOutput = { total: string }
@@ -51,10 +52,13 @@ type CollectedOutput = { total: string }
 export const waitUntilOutput = async (
   stdout: CollectedOutput,
   stderr: CollectedOutput,
-  match: string | RegExp
+  match: string | RegExp,
+  options?: { intervals?: number[]; timeout?: number }
 ) => {
   try {
-    await expect.poll(() => stripAnsi(stdout.total)).toMatch(match)
+    await expect
+      .poll(() => stripAnsi(stdout.total), options)
+      .toMatch(match)
   } catch (e) {
     throw new Error(
       `${e}\n` +
