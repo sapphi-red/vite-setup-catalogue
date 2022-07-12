@@ -16,6 +16,7 @@ const addPollingToConfig = (content: string) => {
     re,
     `
 const pollingConfig = config => {
+  config.cacheDir = '.cache/vite'
   config.server ??= {}
   config.server.watch ??= {}
   config.server.watch.usePolling = true

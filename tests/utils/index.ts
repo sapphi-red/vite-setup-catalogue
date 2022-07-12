@@ -56,9 +56,7 @@ export const waitUntilOutput = async (
   options?: { intervals?: number[]; timeout?: number }
 ) => {
   try {
-    await expect
-      .poll(() => stripAnsi(stdout.total), options)
-      .toMatch(match)
+    await expect.poll(() => stripAnsi(stdout.total), options).toMatch(match)
   } catch (e) {
     throw new Error(
       `${e}\n` +
@@ -117,8 +115,8 @@ export const runDockerCompose = (
     { cwd }
   )
 
-  const stdout =collectOutput(process.stdout)
-  const stderr =collectOutput(process.stderr)
+  const stdout = collectOutput(process.stdout)
+  const stderr = collectOutput(process.stderr)
 
   return {
     process,
