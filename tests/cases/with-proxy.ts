@@ -26,9 +26,10 @@ test.beforeAll(async () => {
     workspaceFileURL
   )
   await waitUntilOutput(
-    dockerComposeProcess.process.stdout,
-    dockerComposeProcess.process.stderr,
-    'Network:'
+    dockerComposeProcess.stdout,
+    dockerComposeProcess.stderr,
+    'Network:',
+    { timeout: 20000 }
   )
 })
 
@@ -46,7 +47,11 @@ test('with-proxy test', async ({ page }) => {
   await expect(title).toHaveText('Hello Vite!!!')
 })
 
-test.afterAll(async () => {
+test.afterAll(async ({}, testInfo) => {
+  if (testInfo.errors.length > 0) {
+    dockerComposeProcess.printLogs()
+  }
+
   // cleanup
   await editFile('./src/main.js', workspaceFileURL, (content) =>
     content.replace('Vite!!!</h1>', 'Vite!</h1>')

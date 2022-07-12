@@ -20,6 +20,9 @@ const pollingConfig = config => {
   config.server.watch ??= {}
   config.server.watch.usePolling = true
   config.server.watch.interval = 100
+
+  // FIXME: needs to change otherwise docker tests will fail with "EACCES: permission denied, mkdir"
+  config.cacheDir = '.cache/vite'
   return config
 }
 export default pollingConfig($1)

@@ -20,6 +20,9 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
+      - name: show docker version
+        run: docker version
+
       - name: install pnpm
         uses: pnpm/action-setup@v2
       - name: setup Node
@@ -60,6 +63,9 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+
+      - name: show docker version
+        run: docker version
 
       - name: install pnpm
         uses: pnpm/action-setup@v2

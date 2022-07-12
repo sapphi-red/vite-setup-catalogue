@@ -6,7 +6,7 @@ import {
   getWorkspaceFileURL,
   killProcess,
   ports,
-  waitUntilOutput,
+  collectAndWaitUntilOutput,
   gotoAndWaitForHMRConnection,
   outputError
 } from '../utils/index.js'
@@ -18,7 +18,7 @@ let viteDevProcess: ChildProcessWithoutNullStreams
 
 test.beforeAll(async () => {
   viteDevProcess = spawn('pnpm', ['run', 'dev'], { cwd: workspaceFileURL })
-  await waitUntilOutput(
+  await collectAndWaitUntilOutput(
     viteDevProcess.stdout,
     viteDevProcess.stderr,
     'Open your browser.'

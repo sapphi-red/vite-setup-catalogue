@@ -7,6 +7,7 @@ import kill from 'tree-kill'
 import fs from 'fs/promises'
 import { spawn } from 'cross-spawn'
 import type { Page } from '@playwright/test'
+import { expect } from '@playwright/test'
 
 export const isDebug = process.env.DEBUG === '1'
 
@@ -25,39 +26,49 @@ export const getWorkspaceFileURL = (directoryName: string) => {
   return new URL(`../../${tempDirName}/${directoryName}/`, import.meta.url)
 }
 
-export const waitUntilOutput = async (
-  stdout: NodeJS.ReadableStream,
-  stderr: NodeJS.ReadableStream,
-  match: string | string[]
-) => {
-  let out = ''
-  let err = ''
-  const m = Array.isArray(match) ? match : [match]
-
+const collectOutput = (readable: NodeJS.ReadableStream): CollectedOutput => {
+  let result = { total: '' }
   ;(async () => {
-    for await (const chunk of stderr) {
-      err += chunk
+    for await (const chunk of readable) {
+      result.total += chunk
     }
   })()
+  return result
+}
 
-  for await (const chunk of stdout) {
-    out += chunk
+export const collectAndWaitUntilOutput = async (
+  stdout: NodeJS.ReadableStream,
+  stderr: NodeJS.ReadableStream,
+  match: string | RegExp,
+  options?: { intervals?: number[]; timeout?: number }
+) => {
+  const stdoutC = collectOutput(stdout)
+  const stderrC = collectOutput(stderr)
+  await waitUntilOutput(stdoutC, stderrC, match, options)
+}
 
-    const text = stripAnsi(out)
-    if (m.every((v) => text.includes(v))) {
-      return text
-    }
+type CollectedOutput = { total: string }
+
+export const waitUntilOutput = async (
+  stdout: CollectedOutput,
+  stderr: CollectedOutput,
+  match: string | RegExp,
+  options?: { intervals?: number[]; timeout?: number }
+) => {
+  try {
+    await expect.poll(() => stripAnsi(stdout.total), options).toMatch(match)
+  } catch (e) {
+    throw new Error(
+      `${e}\n` +
+        `Expected output not found. Output:\n${stripAnsi(
+          stdout.total
+        )}\nError Output:\n${stripAnsi(stderr.total)}`
+    )
   }
-
-  throw new Error(
-    `Expected output not found. Expected: ${JSON.stringify(
-      match
-    )}. Output:\n${stripAnsi(out)}\nError Output:\n${stripAnsi(err)}`
-  )
 }
 
 export const outputError = (page: Page) => {
-  page.on('console', msg => {
+  page.on('console', (msg) => {
     if (msg.type() === 'error') {
       console.warn(`[Browser error] ${msg.text()}`)
     }
@@ -88,6 +99,9 @@ export const waitForHMRConnection = (page: Page, timeout?: number) => {
 
 export type DockerComposeProcess = {
   process: ChildProcessWithoutNullStreams
+  stdout: CollectedOutput
+  stderr: CollectedOutput
+  printLogs: () => void
   down: () => Promise<void>
 }
 
@@ -101,8 +115,22 @@ export const runDockerCompose = (
     { cwd }
   )
 
+  const stdout = collectOutput(process.stdout)
+  const stderr = collectOutput(process.stderr)
+
   return {
     process,
+    stdout,
+    stderr,
+    printLogs: () => {
+      console.log('------')
+      console.log('Docker compose stdout:')
+      console.log(stripAnsi(stdout.total))
+      console.log('------')
+      console.log('Docker compose stderr:')
+      console.log(stripAnsi(stderr.total))
+      console.log('------')
+    },
     down: async () => {
       process.kill()
 
