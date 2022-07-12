@@ -30,7 +30,7 @@ test.beforeAll(async () => {
     dockerComposeProcess.process.stderr,
     'Network:'
   )
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  await new Promise((resolve) => setTimeout(resolve, 1000))
 })
 
 test('with-proxy-no-websocket test', async ({ page }) => {
@@ -47,7 +47,11 @@ test('with-proxy-no-websocket test', async ({ page }) => {
   await expect(title).toHaveText('Hello Vite!!!')
 })
 
-test.afterAll(async () => {
+test.afterAll(async (_args, testInfo) => {
+  if (testInfo.errors.length > 0) {
+    dockerComposeProcess.printLogs()
+  }
+
   // cleanup
   await editFile('./src/main.js', workspaceFileURL, (content) =>
     content.replace('Vite!!!</h1>', 'Vite!</h1>')
