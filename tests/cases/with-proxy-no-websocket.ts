@@ -30,6 +30,7 @@ test.beforeAll(async () => {
     dockerComposeProcess.process.stderr,
     'Network:'
   )
+  await new Promise(resolve => setTimeout(resolve, 1000))
 })
 
 test('with-proxy-no-websocket test', async ({ page }) => {
