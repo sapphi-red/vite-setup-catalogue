@@ -27,7 +27,7 @@ const startVite = async () => {
     dockerComposeProcess.stdout,
     dockerComposeProcess.stderr,
     'Network:',
-    { timeout: 20000 }
+    { timeout: process.env.CI ? 60000 : 20000 } // npm i might take long
   )
 
   return async () => {
