@@ -16,6 +16,7 @@ const entrypoint = 'frontend-src/main.js'
 let viteInject
 if (isDev) {
   viteInject = `
+    <script type="module" src="http://localhost:5183/@vite/client"></script>
     <script type="module" src="http://localhost:5183/${entrypoint}"></script>
   `
 } else {
