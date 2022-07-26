@@ -11,6 +11,24 @@ docker compose -p with-proxy-dev -f compose.dev.yaml up
 docker compose -p with-proxy-dev-nginx -f compose.dev-nginx.yaml up
 ```
 
+### dev using [apache](https://httpd.apache.org/)
+```
+docker compose -p with-proxy-dev-apache -f compose.dev-apache.yaml up
+```
+
+<details>
+<summary>Diff between default "httpd.conf"</summary>
+
+- Load these module
+  - `proxy_module`
+  - `proxy_http_module`
+  - `proxy_wstunnel_module`
+  - `rewrite_module`
+- Enable vhosts
+  - Remove `#` in the beginning from `#Include conf/extra/httpd-vhosts.conf`.
+
+</details>
+
 ### build
 ```shell
 docker run -w /app -v "$(pwd):/app" -v node_modules:/app/node_modules node:16 bash -c "npm i && npm run build"
