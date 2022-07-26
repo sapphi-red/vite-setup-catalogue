@@ -7,7 +7,7 @@ services:
     ports:
       - "3040:3000"
     volumes:
-      - ./CaddyfileDev:/etc/caddy/Caddyfile
+      - ./docker/caddy/CaddyfileDev:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
 
