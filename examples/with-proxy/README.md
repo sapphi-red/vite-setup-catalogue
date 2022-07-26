@@ -1,9 +1,14 @@
 # With Proxy
 
 ## Commands
-### dev
+### dev using [Caddy](https://caddyserver.com/)
 ```shell
 docker compose -p with-proxy-dev -f compose.dev.yaml up
+```
+
+### dev using [nginx](https://nginx.org/)
+```shell
+docker compose -p with-proxy-dev-nginx -f compose.dev-nginx.yaml up
 ```
 
 ### build
