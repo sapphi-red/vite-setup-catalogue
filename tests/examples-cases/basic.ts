@@ -11,8 +11,8 @@ import {
   outputError
 } from '../utils/index.js'
 
-const workspaceFileURL = getWorkspaceFileURL('middleware-mode')
-const accessURL = `http://localhost:${ports.middlewareMode}/`
+const workspaceFileURL = getWorkspaceFileURL('example', 'basic')
+const accessURL = `http://localhost:${ports.basic}/`
 
 const startVite = async () => {
   const viteDevProcess = spawn('pnpm', ['run', 'dev'], {
@@ -21,9 +21,8 @@ const startVite = async () => {
   await collectAndWaitUntilOutput(
     viteDevProcess.stdout,
     viteDevProcess.stderr,
-    'Open your browser.'
+    'use --host to expose'
   )
-
   return async () => {
     try {
       await killProcess(viteDevProcess)
@@ -33,7 +32,7 @@ const startVite = async () => {
 
 const setupAndGotoPage = async (page: Page) => {
   outputError(page)
-  await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 1000 })
+  await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 10000 })
 }
 
 test('hmr test', async ({ page }) => {
@@ -44,7 +43,7 @@ test('hmr test', async ({ page }) => {
     const title = page.locator('h1')
     await expect(title).toHaveText('Hello Vite!')
 
-    await editFile('./src/main.js', workspaceFileURL, (content) =>
+    await editFile('./main.js', workspaceFileURL, (content) =>
       content.replace('Vite!</h1>', 'Vite!!!</h1>')
     )
 
@@ -78,7 +77,7 @@ test('restart test', async ({ page }) => {
 
 test.afterAll(async () => {
   // cleanup
-  await editFile('./src/main.js', workspaceFileURL, (content) =>
+  await editFile('./main.js', workspaceFileURL, (content) =>
     content.replace('Vite!!!</h1>', 'Vite!</h1>')
   )
 })

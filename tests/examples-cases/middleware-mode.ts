@@ -1,39 +1,33 @@
 import { test, expect } from '@playwright/test'
 import type { Page } from '@playwright/test'
+import { spawn } from 'cross-spawn'
 import {
   editFile,
   getWorkspaceFileURL,
+  killProcess,
   ports,
-  waitUntilOutput,
-  useNodeModulesOutsideContainer,
-  runDockerCompose,
+  collectAndWaitUntilOutput,
   gotoAndWaitForHMRConnection,
-  outputError,
-  printRecordedLogs
+  outputError
 } from '../utils/index.js'
 
-const workspaceFileURL = getWorkspaceFileURL('with-proxy')
-const accessURL = `http://localhost:${ports.withProxy}/`
+const workspaceFileURL = getWorkspaceFileURL('example', 'middleware-mode')
+const accessURL = `http://localhost:${ports.middlewareMode}/`
 
 const startVite = async () => {
-  const overrideFile = useNodeModulesOutsideContainer
-    ? ' -f ../../tests/fixtures/compose.with-proxy.yaml'
-    : ''
-
-  const dockerComposeProcess = runDockerCompose(
-    `-p with-proxy-dev -f compose.dev.yaml${overrideFile}`,
-    workspaceFileURL
-  )
-  await waitUntilOutput(
-    dockerComposeProcess.stdout,
-    dockerComposeProcess.stderr,
-    'Network:',
-    { timeout: process.env.CI ? 60000 : 20000 } // npm i might take long
+  const viteDevProcess = spawn('pnpm', ['run', 'dev'], {
+    cwd: workspaceFileURL
+  })
+  await collectAndWaitUntilOutput(
+    viteDevProcess.stdout,
+    viteDevProcess.stderr,
+    'Open your browser.'
   )
 
   return async () => {
-    dockerComposeProcess.recordLogs()
-    await dockerComposeProcess.down()
+    try {
+      await killProcess(viteDevProcess)
+    } catch {}
   }
 }
 
@@ -82,11 +76,7 @@ test('restart test', async ({ page }) => {
   }
 })
 
-test.afterAll(async ({}, testInfo) => {
-  if (testInfo.errors.length > 0) {
-    printRecordedLogs()
-  }
-
+test.afterAll(async () => {
   // cleanup
   await editFile('./src/main.js', workspaceFileURL, (content) =>
     content.replace('Vite!!!</h1>', 'Vite!</h1>')

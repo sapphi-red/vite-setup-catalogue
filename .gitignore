@@ -128,3 +128,4 @@ dist
 
 package-lock.json
 /.examples-temp
+/tests/.fixtures-temp

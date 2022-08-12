@@ -20,7 +20,10 @@ export const isDebug = process.env.DEBUG === '1'
 export const useNodeModulesOutsideContainer =
   process.env.USE_NODE_MODULES_OUTSIDE_CONTAINER === '1'
 
-export const tempDirName = '.examples-temp'
+const exampleTempDirName = '.examples-temp'
+export const exampleTempDir = new URL(`../../${exampleTempDirName}/`, import.meta.url)
+const fixtureTempDirName = '.fixtures-temp'
+export const fixtureTempDir = new URL(`../${fixtureTempDirName}/`, import.meta.url)
 
 export const recordedLogs: string[] = []
 export const printRecordedLogs = () => {
@@ -30,8 +33,11 @@ export const printRecordedLogs = () => {
   recordedLogs.length = 0
 }
 
-export const getWorkspaceFileURL = (directoryName: string) => {
-  return new URL(`../../${tempDirName}/${directoryName}/`, import.meta.url)
+export const getWorkspaceFileURL = (type: 'example' | 'fixture', directoryName: string) => {
+  if (type === 'example') {
+    return new URL(`${directoryName}/`, exampleTempDir)
+  }
+  return new URL(`${directoryName}/`, fixtureTempDir)
 }
 
 const collectOutput = (readable: NodeJS.ReadableStream): CollectedOutput => {
