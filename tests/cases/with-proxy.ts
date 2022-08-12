@@ -17,7 +17,7 @@ const accessURL = `http://localhost:${ports.withProxy}/`
 
 const startVite = async () => {
   const overrideFile = useNodeModulesOutsideContainer
-    ? ' -f ../../tests/fixtures/compose.with-proxy.yaml'
+    ? ' -f compose.node-modules-outside-container.yaml'
     : ''
 
   const dockerComposeProcess = runDockerCompose(

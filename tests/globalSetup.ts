@@ -36,11 +36,16 @@ async function globalSetup(_config: FullConfig) {
   }
 
   const src = new URL('../examples/', import.meta.url)
+  const overrideSrc = new URL('./fixture-overrides/', import.meta.url)
   const dest = new URL(`../${tempDirName}/`, import.meta.url)
 
   await fs.rm(dest, { force: true, recursive: true })
   // fs.cp does not work well with symlinks
   await fsExtra.copy(url.fileURLToPath(src), url.fileURLToPath(dest), {
+    recursive: true,
+    dereference: false
+  })
+  await fsExtra.copy(url.fileURLToPath(overrideSrc), url.fileURLToPath(dest), {
     recursive: true,
     dereference: false
   })

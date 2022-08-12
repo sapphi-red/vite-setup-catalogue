@@ -17,7 +17,7 @@ const accessURL = `http://localhost:${ports.withProxyNoWebSocket}/`
 
 const startVite = async () => {
   const overrideFile = useNodeModulesOutsideContainer
-    ? ' -f ../../tests/fixtures/compose.with-proxy-no-websocket.yaml'
+    ? ' -f compose.node-modules-outside-container.yaml'
     : ''
 
   const dockerComposeProcess = runDockerCompose(
