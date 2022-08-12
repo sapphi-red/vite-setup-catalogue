@@ -7,7 +7,7 @@ import kill from 'tree-kill'
 import fs from 'fs/promises'
 import { spawn } from 'cross-spawn'
 import type { Page } from '@playwright/test'
-import { expect } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 
 export const isDebug = process.env.DEBUG === '1'
 
@@ -21,6 +21,14 @@ export const useNodeModulesOutsideContainer =
   process.env.USE_NODE_MODULES_OUTSIDE_CONTAINER === '1'
 
 export const tempDirName = '.examples-temp'
+
+export const recordedLogs: string[] = []
+export const printRecordedLogs = () => {
+  recordedLogs.forEach((l) => {
+    console.log(l)
+  })
+  recordedLogs.length = 0
+}
 
 export const getWorkspaceFileURL = (directoryName: string) => {
   return new URL(`../../${tempDirName}/${directoryName}/`, import.meta.url)
@@ -69,8 +77,18 @@ export const waitUntilOutput = async (
 
 export const outputError = (page: Page) => {
   page.on('console', (msg) => {
+    let currentTestTitle = '---'
+    try {
+      currentTestTitle = test.info().titlePath.join(' > ')
+    } catch {}
+
+    const text = msg.text()
     if (msg.type() === 'error') {
-      console.warn(`[Browser error] ${msg.text()}`)
+      if (isDebug) {
+        console.info(
+          `[test: ${JSON.stringify(currentTestTitle)}][Browser error] ${text}`
+        )
+      }
     }
   })
 }
@@ -101,7 +119,7 @@ export type DockerComposeProcess = {
   process: ChildProcessWithoutNullStreams
   stdout: CollectedOutput
   stderr: CollectedOutput
-  printLogs: () => void
+  recordLogs: () => void
   down: () => Promise<void>
 }
 
@@ -122,14 +140,14 @@ export const runDockerCompose = (
     process,
     stdout,
     stderr,
-    printLogs: () => {
-      console.log('------')
-      console.log('Docker compose stdout:')
-      console.log(stripAnsi(stdout.total))
-      console.log('------')
-      console.log('Docker compose stderr:')
-      console.log(stripAnsi(stderr.total))
-      console.log('------')
+    recordLogs: () => {
+      recordedLogs.push('------')
+      recordedLogs.push('Docker compose stdout:')
+      recordedLogs.push(stripAnsi(stdout.total))
+      recordedLogs.push('------')
+      recordedLogs.push('Docker compose stderr:')
+      recordedLogs.push(stripAnsi(stderr.total))
+      recordedLogs.push('------')
     },
     down: async () => {
       process.kill()

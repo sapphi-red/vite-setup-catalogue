@@ -8,7 +8,8 @@ import {
   useNodeModulesOutsideContainer,
   runDockerCompose,
   gotoAndWaitForHMRConnection,
-  outputError
+  outputError,
+  printRecordedLogs
 } from '../utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('with-proxy')
@@ -31,6 +32,7 @@ const startVite = async () => {
   )
 
   return async () => {
+    dockerComposeProcess.recordLogs()
     await dockerComposeProcess.down()
   }
 }
@@ -82,7 +84,7 @@ test('restart test', async ({ page }) => {
 
 test.afterAll(async ({}, testInfo) => {
   if (testInfo.errors.length > 0) {
-    dockerComposeProcess.printLogs()
+    printRecordedLogs()
   }
 
   // cleanup
