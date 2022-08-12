@@ -1,45 +1,53 @@
 import { test, expect } from '@playwright/test'
 import type { Page } from '@playwright/test'
+import { spawn } from 'cross-spawn'
 import {
   editFile,
   getWorkspaceFileURL,
+  killProcess,
   ports,
-  waitUntilOutput,
-  useNodeModulesOutsideContainer,
-  runDockerCompose,
+  collectAndWaitUntilOutput,
   gotoAndWaitForHMRConnection,
-  outputError,
-  printRecordedLogs
+  outputError
 } from '../utils/index.js'
 
-const workspaceFileURL = getWorkspaceFileURL('with-proxy')
-const accessURL = `http://localhost:${ports.withProxy}/`
+const workspaceFileURL = getWorkspaceFileURL('example', 'backend-server')
+const accessURL = `http://localhost:${ports.backendServer}/`
 
 const startVite = async () => {
-  const overrideFile = useNodeModulesOutsideContainer
-    ? ' -f compose.node-modules-outside-container.yaml'
-    : ''
-
-  const dockerComposeProcess = runDockerCompose(
-    `-p with-proxy-dev -f compose.dev.yaml${overrideFile}`,
-    workspaceFileURL
-  )
-  await waitUntilOutput(
-    dockerComposeProcess.stdout,
-    dockerComposeProcess.stderr,
-    'Network:',
-    { timeout: process.env.CI ? 60000 : 20000 } // npm i might take long
-  )
+  // pnpm run dev cannot be used because killing process does not work
+  const viteDevProcess = spawn('pnpm', ['run', 'dev:vite'], {
+    cwd: workspaceFileURL
+  })
+  const backendProcess = spawn('pnpm', ['run', 'dev:backend'], {
+    cwd: workspaceFileURL
+  })
+  await Promise.all([
+    collectAndWaitUntilOutput(
+      viteDevProcess.stdout,
+      viteDevProcess.stderr,
+      'use --host to expose'
+    ),
+    collectAndWaitUntilOutput(
+      backendProcess.stdout,
+      backendProcess.stderr,
+      'Open your browser.'
+    )
+  ])
 
   return async () => {
-    dockerComposeProcess.recordLogs()
-    await dockerComposeProcess.down()
+    try {
+      await killProcess(viteDevProcess)
+    } catch {}
+    try {
+      await killProcess(backendProcess)
+    } catch {}
   }
 }
 
 const setupAndGotoPage = async (page: Page) => {
   outputError(page)
-  await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 1000 })
+  await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 10000 })
 }
 
 test('hmr test', async ({ page }) => {
@@ -50,7 +58,7 @@ test('hmr test', async ({ page }) => {
     const title = page.locator('h1')
     await expect(title).toHaveText('Hello Vite!')
 
-    await editFile('./src/main.js', workspaceFileURL, (content) =>
+    await editFile('./frontend-src/main.js', workspaceFileURL, (content) =>
       content.replace('Vite!</h1>', 'Vite!!!</h1>')
     )
 
@@ -82,13 +90,9 @@ test('restart test', async ({ page }) => {
   }
 })
 
-test.afterAll(async ({}, testInfo) => {
-  if (testInfo.errors.length > 0) {
-    printRecordedLogs()
-  }
-
+test.afterAll(async () => {
   // cleanup
-  await editFile('./src/main.js', workspaceFileURL, (content) =>
+  await editFile('./frontend-src/main.js', workspaceFileURL, (content) =>
     content.replace('Vite!!!</h1>', 'Vite!</h1>')
   )
 })

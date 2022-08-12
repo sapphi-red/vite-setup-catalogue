@@ -11,7 +11,7 @@ import {
   outputError
 } from '../utils/index.js'
 
-const workspaceFileURL = getWorkspaceFileURL('middleware-mode')
+const workspaceFileURL = getWorkspaceFileURL('example', 'middleware-mode')
 const accessURL = `http://localhost:${ports.middlewareMode}/`
 
 const startVite = async () => {

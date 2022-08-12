@@ -7,8 +7,8 @@ const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   timeout: process.env.CI ? 120 * 1000 : undefined,
-  testDir: 'cases',
-  testMatch: '**/*.ts',
+  testDir: '.',
+  testMatch: '{examples-cases,fixtures-cases}/**/*.ts',
   use: {
     headless: !isDebug
   }

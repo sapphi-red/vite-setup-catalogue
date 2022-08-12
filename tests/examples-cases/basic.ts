@@ -1,45 +1,38 @@
 import { test, expect } from '@playwright/test'
 import type { Page } from '@playwright/test'
+import { spawn } from 'cross-spawn'
 import {
   editFile,
   getWorkspaceFileURL,
+  killProcess,
   ports,
-  waitUntilOutput,
-  useNodeModulesOutsideContainer,
-  runDockerCompose,
+  collectAndWaitUntilOutput,
   gotoAndWaitForHMRConnection,
-  outputError,
-  printRecordedLogs
+  outputError
 } from '../utils/index.js'
 
-const workspaceFileURL = getWorkspaceFileURL('with-proxy-no-websocket')
-const accessURL = `http://localhost:${ports.withProxyNoWebSocket}/`
+const workspaceFileURL = getWorkspaceFileURL('example', 'basic')
+const accessURL = `http://localhost:${ports.basic}/`
 
 const startVite = async () => {
-  const overrideFile = useNodeModulesOutsideContainer
-    ? ' -f compose.node-modules-outside-container.yaml'
-    : ''
-
-  const dockerComposeProcess = runDockerCompose(
-    `-p with-proxy-no-websocket-dev -f compose.dev.yaml${overrideFile}`,
-    workspaceFileURL
+  const viteDevProcess = spawn('pnpm', ['run', 'dev'], {
+    cwd: workspaceFileURL
+  })
+  await collectAndWaitUntilOutput(
+    viteDevProcess.stdout,
+    viteDevProcess.stderr,
+    'use --host to expose'
   )
-  await waitUntilOutput(
-    dockerComposeProcess.stdout,
-    dockerComposeProcess.stderr,
-    'Network:',
-    { timeout: process.env.CI ? 60000 : 20000 } // npm i might take long
-  )
-
   return async () => {
-    dockerComposeProcess.recordLogs()
-    await dockerComposeProcess.down()
+    try {
+      await killProcess(viteDevProcess)
+    } catch {}
   }
 }
 
 const setupAndGotoPage = async (page: Page) => {
   outputError(page)
-  await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 1000 })
+  await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 10000 })
 }
 
 test('hmr test', async ({ page }) => {
@@ -50,7 +43,7 @@ test('hmr test', async ({ page }) => {
     const title = page.locator('h1')
     await expect(title).toHaveText('Hello Vite!')
 
-    await editFile('./src/main.js', workspaceFileURL, (content) =>
+    await editFile('./main.js', workspaceFileURL, (content) =>
       content.replace('Vite!</h1>', 'Vite!!!</h1>')
     )
 
@@ -82,13 +75,9 @@ test('restart test', async ({ page }) => {
   }
 })
 
-test.afterAll(async ({}, testInfo) => {
-  if (testInfo.errors.length > 0) {
-    printRecordedLogs()
-  }
-
+test.afterAll(async () => {
   // cleanup
-  await editFile('./src/main.js', workspaceFileURL, (content) =>
+  await editFile('./main.js', workspaceFileURL, (content) =>
     content.replace('Vite!!!</h1>', 'Vite!</h1>')
   )
 })
