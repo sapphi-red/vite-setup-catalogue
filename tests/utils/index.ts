@@ -208,9 +208,13 @@ export const editFile = async (
  * Make sure these don't conflict each other to run tests parallelly.
  */
 export const ports = {
+  /* examples */
   basic: 5173,
   backendServer: 3000, // vite: 5183
   middlewareMode: 3010,
   withProxy: 3030,
-  withProxyNoWebSocket: 3040 // vite: 5193
+  withProxyNoWebSocket: 3040, // vite: 5193
+
+  /* fixtures */
+  backendHttpsViteHttp: 7002, // vite: 7001
 }
