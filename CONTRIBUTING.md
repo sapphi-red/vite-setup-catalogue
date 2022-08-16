@@ -7,7 +7,7 @@ Hi! Thank you for taking your time in contributing to Vite setup catalogue. Befo
 This repo is a monorepo using pnpm workspaces.
 
 Also this repo uses Docker, too.
-But if you are not changing Docker related examples/tests, you won't need to install it.
+But if you are not changing Docker related examples/tests, you won't need to install it by skipping those tests.
 
 Note that inside Docker, npm is used instead of pnpm.
 
