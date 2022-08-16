@@ -10,7 +10,8 @@ const config: PlaywrightTestConfig = {
   testDir: '.',
   testMatch: '{examples-cases,fixtures-cases}/**/*.ts',
   use: {
-    headless: !isDebug
+    headless: !isDebug,
+    ignoreHTTPSErrors: true // allow self-signed cert
   }
 }
 export default config

@@ -1,0 +1,16 @@
+{
+  "name": "backend-https-vite-http",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0",
+  "scripts": {
+    "dev:vite": "vite dev",
+    "dev:backend": "node backend-src/index.js"
+  },
+  "devDependencies": {
+    "vite": "^3.0.8"
+  },
+  "dependencies": {
+    "connect": "^3.7.0"
+  }
+}
