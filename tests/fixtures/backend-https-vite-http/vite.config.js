@@ -9,6 +9,11 @@ export default defineConfig({
     strictPort: true,
     hmr: {
       protocol: 'ws'
+    },
+    // for consistency
+    watch: {
+      usePolling: true,
+      interval: 100
     }
   }
 })
