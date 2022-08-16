@@ -16,7 +16,7 @@ const viteInject = `
 
 const indexTemplatePath = new URL('./templates/index.html', import.meta.url)
 
-connect.use(async (req, res, next) => {
+connect.use(async (req, res, _next) => {
   let content = await fs.readFile(indexTemplatePath, 'utf-8')
   content = content.replace('<%- viteInject %>', viteInject)
   res.statusCode = 200
