@@ -1,4 +1,4 @@
-# Vite setup catalogue
+# Vite setup catalogue ![lint](https://github.com/sapphi-red/vite-setup-catalogue/workflows/lint/badge.svg) ![test](https://github.com/sapphi-red/vite-setup-catalogue/workflows/test/badge.svg)
 
 This repository contains several example of Vite setups.
 
