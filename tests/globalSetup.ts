@@ -37,18 +37,26 @@ const setupExamples = async () => {
 
   await fs.rm(exampleTempDir, { force: true, recursive: true })
   // fs.cp does not work well with symlinks
-  await fsExtra.copy(url.fileURLToPath(src), url.fileURLToPath(exampleTempDir), {
-    recursive: true,
-    dereference: false
-  })
-  await fsExtra.copy(url.fileURLToPath(overrideSrc), url.fileURLToPath(exampleTempDir), {
-    recursive: true,
-    dereference: false
-  })
+  await fsExtra.copy(
+    url.fileURLToPath(src),
+    url.fileURLToPath(exampleTempDir),
+    {
+      recursive: true,
+      dereference: false
+    }
+  )
+  await fsExtra.copy(
+    url.fileURLToPath(overrideSrc),
+    url.fileURLToPath(exampleTempDir),
+    {
+      recursive: true,
+      dereference: false
+    }
+  )
 
   const dirs = await fs.readdir(exampleTempDir)
   await Promise.all(
-    dirs.map(async (dir) => {
+    dirs.map(async dir => {
       await editFile(
         './vite.config.js',
         new URL(`./${dir}/`, exampleTempDir),
@@ -63,10 +71,14 @@ const setupFixtures = async () => {
 
   await fs.rm(fixtureTempDir, { force: true, recursive: true })
   // fs.cp does not work well with symlinks
-  await fsExtra.copy(url.fileURLToPath(src), url.fileURLToPath(fixtureTempDir), {
-    recursive: true,
-    dereference: false
-  })
+  await fsExtra.copy(
+    url.fileURLToPath(src),
+    url.fileURLToPath(fixtureTempDir),
+    {
+      recursive: true,
+      dereference: false
+    }
+  )
 }
 
 async function globalSetup(_config: FullConfig) {

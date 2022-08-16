@@ -29,7 +29,7 @@ if (isDev) {
   const main = manifest[entrypoint]
 
   viteInject = `
-    ${main.css.map((href) => `<link rel="stylesheet" href="${href}" />`)}
+    ${main.css.map(href => `<link rel="stylesheet" href="${href}" />`)}
     <script type="module" src="${main.file}"></script>
   `
 }
@@ -61,7 +61,7 @@ const indexTemplatePath = url.fileURLToPath(
   new URL('./templates/index.ejs', import.meta.url)
 )
 
-connect.use(async (req, res, next) => {
+connect.use(async (req, res, _next) => {
   const content = await ejs.renderFile(indexTemplatePath, {
     data: 'foo',
     viteInject

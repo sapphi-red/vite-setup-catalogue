@@ -1,11 +1,11 @@
-version: "3.7"
+version: '3.7'
 
 services:
   nginx:
     image: nginx:1.23
     restart: unless-stopped
     ports:
-      - "3030:3000"
+      - '3030:3000'
     volumes:
       - ./docker/nginx/:/etc/nginx/conf.d/:ro
 

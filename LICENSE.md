@@ -1,4 +1,5 @@
 # Files under `examples` directory
+
 ```
 Creative Commons Legal Code
 
@@ -124,6 +125,7 @@ express Statement of Purpose.
 ```
 
 # Other files
+
 ```
 MIT License
 

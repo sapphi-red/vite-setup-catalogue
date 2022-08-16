@@ -50,7 +50,7 @@ test('hmr test', async ({ page }) => {
     const title = page.locator('h1')
     await expect(title).toHaveText('Hello Vite!')
 
-    await editFile('./src/main.js', workspaceFileURL, (content) =>
+    await editFile('./src/main.js', workspaceFileURL, content =>
       content.replace('Vite!</h1>', 'Vite!!!</h1>')
     )
 
@@ -82,13 +82,14 @@ test('restart test', async ({ page }) => {
   }
 })
 
+// eslint-disable-next-line no-empty-pattern
 test.afterAll(async ({}, testInfo) => {
   if (testInfo.errors.length > 0) {
     printRecordedLogs()
   }
 
   // cleanup
-  await editFile('./src/main.js', workspaceFileURL, (content) =>
+  await editFile('./src/main.js', workspaceFileURL, content =>
     content.replace('Vite!!!</h1>', 'Vite!</h1>')
   )
 })

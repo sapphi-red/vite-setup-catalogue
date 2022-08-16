@@ -1,11 +1,11 @@
-version: "3.7"
+version: '3.7'
 
 services:
   apache:
     image: httpd:2.4
     restart: unless-stopped
     ports:
-      - "3030:80"
+      - '3030:80'
     volumes:
       - ./docker/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
       - ./docker/apache/extra/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf:ro

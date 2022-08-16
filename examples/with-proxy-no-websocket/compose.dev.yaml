@@ -1,11 +1,11 @@
-version: "3.7"
+version: '3.7'
 
 services:
   caddy:
     image: caddy:2
     restart: unless-stopped
     ports:
-      - "3040:3000"
+      - '3040:3000'
     volumes:
       - ./docker/caddy/CaddyfileDev:/etc/caddy/Caddyfile
       - caddy_data:/data
@@ -15,7 +15,7 @@ services:
     image: node:16
     restart: unless-stopped
     ports:
-      - "5193:5193"
+      - '5193:5193'
     volumes:
       - .:/app
       - node_modules:/app/node_modules

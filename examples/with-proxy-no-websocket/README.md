@@ -1,15 +1,19 @@
 # With Proxy (No WebSocket)
 
 ## Commands
+
 ### dev
+
 ```shell
 docker compose -p with-proxy-no-websocket-dev -f compose.dev.yaml up
 ```
 
 ### build
+
 See ["With Proxy"](https://github.com/sapphi-red/vite-setup-catalogue/tree/main/examples/with-proxy) instead.
 
 ### preview
+
 See ["With Proxy"](https://github.com/sapphi-red/vite-setup-catalogue/tree/main/examples/with-proxy) instead.
 
 ## Notes
@@ -17,6 +21,7 @@ See ["With Proxy"](https://github.com/sapphi-red/vite-setup-catalogue/tree/main/
 See ["With Proxy"](https://github.com/sapphi-red/vite-setup-catalogue/tree/main/examples/with-proxy/README.md#notes), too.
 
 ### "Set `server.hmr.port` from `server.port`" plugin
+
 This plugin sets `server.hmr.port` as the same value with `server.port`.
 This might be useful when:
 
@@ -41,6 +46,7 @@ const setHmrPortFromPortPlugin = {
 ```
 
 You could use this plugin like this:
+
 ```js
 import { defineConfig } from 'vite'
 

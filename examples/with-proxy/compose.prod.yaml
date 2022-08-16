@@ -1,11 +1,11 @@
-version: "3.7"
+version: '3.7'
 
 services:
   caddy:
     image: caddy:2
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - '3000:3000'
     volumes:
       - ./docker/caddy/CaddyfileProd:/etc/caddy/Caddyfile
       - ./dist:/app

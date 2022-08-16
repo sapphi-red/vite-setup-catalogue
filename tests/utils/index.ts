@@ -21,19 +21,28 @@ export const useNodeModulesOutsideContainer =
   process.env.USE_NODE_MODULES_OUTSIDE_CONTAINER === '1'
 
 const exampleTempDirName = '.examples-temp'
-export const exampleTempDir = new URL(`../../${exampleTempDirName}/`, import.meta.url)
+export const exampleTempDir = new URL(
+  `../../${exampleTempDirName}/`,
+  import.meta.url
+)
 const fixtureTempDirName = '.fixtures-temp'
-export const fixtureTempDir = new URL(`../${fixtureTempDirName}/`, import.meta.url)
+export const fixtureTempDir = new URL(
+  `../${fixtureTempDirName}/`,
+  import.meta.url
+)
 
 export const recordedLogs: string[] = []
 export const printRecordedLogs = () => {
-  recordedLogs.forEach((l) => {
+  recordedLogs.forEach(l => {
     console.log(l)
   })
   recordedLogs.length = 0
 }
 
-export const getWorkspaceFileURL = (type: 'example' | 'fixture', directoryName: string) => {
+export const getWorkspaceFileURL = (
+  type: 'example' | 'fixture',
+  directoryName: string
+) => {
   if (type === 'example') {
     return new URL(`${directoryName}/`, exampleTempDir)
   }
@@ -41,7 +50,7 @@ export const getWorkspaceFileURL = (type: 'example' | 'fixture', directoryName: 
 }
 
 const collectOutput = (readable: NodeJS.ReadableStream): CollectedOutput => {
-  let result = { total: '' }
+  const result = { total: '' }
   ;(async () => {
     for await (const chunk of readable) {
       result.total += chunk
@@ -82,7 +91,7 @@ export const waitUntilOutput = async (
 }
 
 export const outputError = (page: Page) => {
-  page.on('console', (msg) => {
+  page.on('console', msg => {
     let currentTestTitle = '---'
     try {
       currentTestTitle = test.info().titlePath.join(' > ')
@@ -116,7 +125,7 @@ export const gotoAndWaitForHMRConnection = async (
 export const waitForHMRConnection = (page: Page, timeout?: number) => {
   return page.waitForEvent('console', {
     // sometime the `msg.type()` is 'log', most time it is 'debug'
-    predicate: (msg) => msg.text() === '[vite] connected.',
+    predicate: msg => msg.text() === '[vite] connected.',
     timeout
   })
 }
@@ -164,7 +173,7 @@ export const runDockerCompose = (
         { cwd }
       )
       await new Promise<void>((resolve, reject) => {
-        downProcess.on('exit', (code) => {
+        downProcess.on('exit', code => {
           if (code !== null && code !== 0) {
             reject(
               new Error(`docker compose down failed with exit code ${code}`)
@@ -184,7 +193,7 @@ export const killProcess = (process: ChildProcess) => {
       return
     }
 
-    kill(process.pid!, (err) => {
+    kill(process.pid, err => {
       if (err) {
         reject(err)
       }

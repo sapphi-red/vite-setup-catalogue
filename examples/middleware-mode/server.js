@@ -14,7 +14,7 @@ const { middlewares } = await createServer({
 const connect = Connect()
 
 connect.use(middlewares)
-connect.use(async (req, res, next) => {
+connect.use(async (req, res, _next) => {
   const content = await fs.readFile('./index.html')
   res.statusCode = 200
   res.end(content)
