@@ -95,18 +95,29 @@ export const waitUntilOutput = async (
 export const collectBrowserLogs = (page: Page) => {
   browserLogs.length = 0
 
-  page.on('console', msg => {
+  const getCurrentTestTitle = () => {
     let currentTestTitle = '---'
     try {
       currentTestTitle = test.info().titlePath.join(' > ')
     } catch {}
+    return currentTestTitle
+  }
 
+  page.on('pageerror', err => {
+    const currentTestTitle = getCurrentTestTitle()
+    console.info(
+      `[test: ${JSON.stringify(currentTestTitle)}][Browser page error]`, err
+    )
+  })
+
+  page.on('console', msg => {
+    const currentTestTitle = getCurrentTestTitle()
     const type = msg.type()
     const text = msg.text()
     if (type === 'error') {
       if (isDebug) {
         console.info(
-          `[test: ${JSON.stringify(currentTestTitle)}][Browser error] ${text}`
+          `[test: ${JSON.stringify(currentTestTitle)}][Browser console error] ${text}`
         )
       }
     }
