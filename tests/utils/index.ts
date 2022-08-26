@@ -132,7 +132,7 @@ export const waitForHMRConnection = async (page: Page, timeout?: number) => {
   try {
     await page.waitForEvent('console', {
       // sometime the `msg.type()` is 'log', most time it is 'debug'
-      predicate: msg => msg.text() === 'usfeww',// msg.text() === '[vite] connected.',
+      predicate: msg => msg.text() === '[vite] connected.',
       timeout
     })
   } catch (e) {
