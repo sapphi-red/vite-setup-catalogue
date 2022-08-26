@@ -8,7 +8,7 @@ import {
   ports,
   collectAndWaitUntilOutput,
   gotoAndWaitForHMRConnection,
-  outputError
+  collectBrowserLogs
 } from '../utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('example', 'basic')
@@ -31,7 +31,7 @@ const startVite = async () => {
 }
 
 const setupAndGotoPage = async (page: Page) => {
-  outputError(page)
+  collectBrowserLogs(page)
   await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 10000 })
 }
 

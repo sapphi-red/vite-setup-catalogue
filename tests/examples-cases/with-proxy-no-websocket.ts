@@ -8,7 +8,7 @@ import {
   useNodeModulesOutsideContainer,
   runDockerCompose,
   gotoAndWaitForHMRConnection,
-  outputError,
+  collectBrowserLogs,
   printRecordedLogs
 } from '../utils/index.js'
 
@@ -41,7 +41,7 @@ const startVite = async () => {
 }
 
 const setupAndGotoPage = async (page: Page) => {
-  outputError(page)
+  collectBrowserLogs(page)
   await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 1000 })
 }
 

@@ -8,10 +8,13 @@ import {
   ports,
   collectAndWaitUntilOutput,
   gotoAndWaitForHMRConnection,
-  outputError
+  collectBrowserLogs
 } from '../utils/index.js'
 
-const workspaceFileURL = getWorkspaceFileURL('fixture', 'backend-https-vite-http')
+const workspaceFileURL = getWorkspaceFileURL(
+  'fixture',
+  'backend-https-vite-http'
+)
 const accessURL = `https://localhost:${ports.backendHttpsViteHttp}/`
 
 const startVite = async () => {
@@ -46,7 +49,7 @@ const startVite = async () => {
 }
 
 const setupAndGotoPage = async (page: Page) => {
-  outputError(page)
+  collectBrowserLogs(page)
   await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 10000 })
 }
 
@@ -58,7 +61,7 @@ test('hmr test', async ({ page }) => {
     const title = page.locator('h1')
     await expect(title).toHaveText('Hello Vite!')
 
-    await editFile('./frontend-src/main.js', workspaceFileURL, (content) =>
+    await editFile('./frontend-src/main.js', workspaceFileURL, content =>
       content.replace('Vite!</h1>', 'Vite!!!</h1>')
     )
 
@@ -92,7 +95,7 @@ test('restart test', async ({ page }) => {
 
 test.afterAll(async () => {
   // cleanup
-  await editFile('./frontend-src/main.js', workspaceFileURL, (content) =>
+  await editFile('./frontend-src/main.js', workspaceFileURL, content =>
     content.replace('Vite!!!</h1>', 'Vite!</h1>')
   )
 })

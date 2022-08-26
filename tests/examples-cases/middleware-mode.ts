@@ -8,7 +8,7 @@ import {
   ports,
   collectAndWaitUntilOutput,
   gotoAndWaitForHMRConnection,
-  outputError
+  collectBrowserLogs
 } from '../utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('example', 'middleware-mode')
@@ -32,7 +32,7 @@ const startVite = async () => {
 }
 
 const setupAndGotoPage = async (page: Page) => {
-  outputError(page)
+  collectBrowserLogs(page)
   await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 1000 })
 }
 

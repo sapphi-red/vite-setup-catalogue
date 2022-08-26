@@ -39,6 +39,8 @@ export const printRecordedLogs = () => {
   recordedLogs.length = 0
 }
 
+const browserLogs: Array<{ type: string, text: string }> = []
+
 export const getWorkspaceFileURL = (
   type: 'example' | 'fixture',
   directoryName: string
@@ -90,21 +92,25 @@ export const waitUntilOutput = async (
   }
 }
 
-export const outputError = (page: Page) => {
+export const collectBrowserLogs = (page: Page) => {
+  browserLogs.length = 0
+
   page.on('console', msg => {
     let currentTestTitle = '---'
     try {
       currentTestTitle = test.info().titlePath.join(' > ')
     } catch {}
 
+    const type = msg.type()
     const text = msg.text()
-    if (msg.type() === 'error') {
+    if (type === 'error') {
       if (isDebug) {
         console.info(
           `[test: ${JSON.stringify(currentTestTitle)}][Browser error] ${text}`
         )
       }
     }
+    browserLogs.push({ type, text })
   })
 }
 
@@ -122,12 +128,21 @@ export const gotoAndWaitForHMRConnection = async (
   return res
 }
 
-export const waitForHMRConnection = (page: Page, timeout?: number) => {
-  return page.waitForEvent('console', {
-    // sometime the `msg.type()` is 'log', most time it is 'debug'
-    predicate: msg => msg.text() === '[vite] connected.',
-    timeout
-  })
+export const waitForHMRConnection = async (page: Page, timeout?: number) => {
+  try {
+    await page.waitForEvent('console', {
+      // sometime the `msg.type()` is 'log', most time it is 'debug'
+      predicate: msg => msg.text() === 'usfeww',// msg.text() === '[vite] connected.',
+      timeout
+    })
+  } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ((e as any).name === 'TimeoutError') {
+      console.warn('waitForHMRConnection timeout:', browserLogs)
+    } else {
+      throw e
+    }
+  }
 }
 
 export type DockerComposeProcess = {
@@ -225,5 +240,5 @@ export const ports = {
   withProxyNoWebSocket: 3040, // vite: 5193
 
   /* fixtures */
-  backendHttpsViteHttp: 7002, // vite: 7001
+  backendHttpsViteHttp: 7002 // vite: 7001
 }
