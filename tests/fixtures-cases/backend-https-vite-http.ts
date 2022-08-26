@@ -50,7 +50,7 @@ const startVite = async () => {
 
 const setupAndGotoPage = async (page: Page) => {
   collectBrowserLogs(page)
-  await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 10000 })
+  await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 1000 })
 }
 
 test('hmr test', async ({ page }) => {
