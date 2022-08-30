@@ -39,7 +39,7 @@ export const printRecordedLogs = () => {
   recordedLogs.length = 0
 }
 
-const browserLogs: Array<{ type: string, text: string }> = []
+const browserLogs: Array<{ type: string; text: string }> = []
 
 export const getWorkspaceFileURL = (
   type: 'example' | 'fixture',
@@ -106,7 +106,8 @@ export const collectBrowserLogs = (page: Page) => {
   page.on('pageerror', err => {
     const currentTestTitle = getCurrentTestTitle()
     console.info(
-      `[test: ${JSON.stringify(currentTestTitle)}][Browser page error]`, err
+      `[test: ${JSON.stringify(currentTestTitle)}][Browser page error]`,
+      err
     )
   })
 
@@ -117,7 +118,9 @@ export const collectBrowserLogs = (page: Page) => {
     if (type === 'error') {
       if (isDebug) {
         console.info(
-          `[test: ${JSON.stringify(currentTestTitle)}][Browser console error] ${text}`
+          `[test: ${JSON.stringify(
+            currentTestTitle
+          )}][Browser console error] ${text}`
         )
       }
     }

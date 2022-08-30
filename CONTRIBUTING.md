@@ -22,11 +22,13 @@ I'm trying to make this as minimal as possible. For more detailed / out-of-the b
 This repo includes tests for Vite with several setups. These are focused on testing setup specific features. Other tests should be done in [Vite's repo](https://github.com/vitejs/vite).
 
 ### Example tests
+
 The test cases under `tests/examples-cases` runs against projects under `examples`.
 
 `examples-overrides` directory can be used for overriding/adding files which are only used during tests.
 
 ### Non-example (Fixture) tests
+
 The test cases under `tests/fixtures-cases` runs against projects under `tests/fixtures`.
 
 Use this to run tests for setups not included in `examples`.
