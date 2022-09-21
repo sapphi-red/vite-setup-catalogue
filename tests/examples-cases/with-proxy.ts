@@ -89,7 +89,7 @@ test('restart test', async ({ page }) => {
     console.log(`s${i++}`)
 
     console.log('---ps---')
-    console.log(execSync('ps lx'))
+    console.log(execSync('ps lx').toString())
 
     const navigationPromise = page.waitForNavigation({ timeout: 10000 })
     console.log(`s${i++}`)
