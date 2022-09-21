@@ -87,8 +87,6 @@ test('restart test', async ({ page }) => {
     finishVite1 = undefined
     console.log(`s${i++}`)
 
-    page.reload()
-
     const navigationPromise = page.waitForNavigation({ timeout: 10000 })
     console.log(`s${i++}`)
 
