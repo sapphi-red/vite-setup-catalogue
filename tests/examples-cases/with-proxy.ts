@@ -9,7 +9,8 @@ import {
   runDockerCompose,
   gotoAndWaitForHMRConnection,
   collectBrowserLogs,
-  printRecordedLogs
+  printRecordedLogs,
+  wait
 } from '../utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('example', 'with-proxy')
@@ -87,6 +88,8 @@ test('restart test', async ({ page }) => {
     await finishVite1()
     finishVite1 = undefined
     console.log(`s${i++}`)
+
+    await wait(1000) // wait for ws to be disconnected
 
     finishVite2 = await startVite()
     console.log(`s${i++}`)

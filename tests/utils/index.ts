@@ -170,6 +170,9 @@ export const waitForHMRConnection = async (page: Page, timeout?: number) => {
   }
 }
 
+export const wait = (ms: number) =>
+  new Promise<void>(resolve => setTimeout(resolve, ms))
+
 export type DockerComposeProcess = {
   process: ChildProcessWithoutNullStreams
   stdout: CollectedOutput
