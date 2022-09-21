@@ -236,7 +236,6 @@ export const runDockerCompose = async (
       if (!success) {
         console.warn('failed to sigint docker compose')
       }
-      await killProcess(process)
 
       const downProcess = spawn(
         'docker',
