@@ -9,7 +9,8 @@ import {
   runDockerCompose,
   gotoAndWaitForHMRConnection,
   collectBrowserLogs,
-  printRecordedLogs
+  printRecordedLogs,
+  wait
 } from '../utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('example', 'with-proxy')
@@ -39,6 +40,7 @@ const startVite = async () => {
     { timeout: 30000 } // npm i might take long
   )
   console.log('[docker-compose] detected vite start')
+  await wait(100)
 
   return async () => {
     dockerComposeProcess.recordLogs()
