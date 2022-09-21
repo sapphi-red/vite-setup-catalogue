@@ -10,7 +10,7 @@ import {
   gotoAndWaitForHMRConnection,
   collectBrowserLogs,
   printRecordedLogs,
-  wait
+  waitForHMRPolling
 } from '../utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('example', 'with-proxy')
@@ -82,14 +82,15 @@ test('restart test', async ({ page }) => {
     await setupAndGotoPage(page)
     console.log(`s${i++}`)
 
-    const navigationPromise = page.waitForNavigation({ timeout: 10000 })
-    console.log(`s${i++}`)
-
     await finishVite1()
     finishVite1 = undefined
     console.log(`s${i++}`)
 
-    await wait(1000) // wait for ws to be disconnected
+    await waitForHMRPolling(page)
+    console.log(`s${i++}`)
+
+    const navigationPromise = page.waitForNavigation({ timeout: 10000 })
+    console.log(`s${i++}`)
 
     finishVite2 = await startVite()
     console.log(`s${i++}`)

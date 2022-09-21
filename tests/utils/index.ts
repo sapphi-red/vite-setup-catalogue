@@ -170,8 +170,21 @@ export const waitForHMRConnection = async (page: Page, timeout?: number) => {
   }
 }
 
-export const wait = (ms: number) =>
-  new Promise<void>(resolve => setTimeout(resolve, ms))
+export const waitForHMRPolling = async (page: Page, timeout = 10000) => {
+  try {
+    await page.waitForEvent('console', {
+      predicate: msg => msg.text() === '[vite] server connection lost. polling for restart...',
+      timeout
+    })
+  } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ((e as any).name === 'TimeoutError') {
+      console.warn('waitForHMRPolling timeout:', browserLogs)
+    } else {
+      throw e
+    }
+  }
+}
 
 export type DockerComposeProcess = {
   process: ChildProcessWithoutNullStreams
