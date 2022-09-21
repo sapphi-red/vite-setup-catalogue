@@ -8,8 +8,7 @@ import {
   ports,
   collectAndWaitUntilOutput,
   gotoAndWaitForHMRConnection,
-  collectBrowserLogs,
-  wait
+  collectBrowserLogs
 } from '../utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('example', 'basic')
@@ -24,8 +23,6 @@ const startVite = async () => {
     viteDevProcess.stderr,
     'use --host to expose'
   )
-  await wait(100)
-
   return async () => {
     try {
       await killProcess(viteDevProcess)

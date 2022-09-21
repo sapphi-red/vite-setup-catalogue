@@ -8,8 +8,7 @@ import {
   ports,
   collectAndWaitUntilOutput,
   gotoAndWaitForHMRConnection,
-  collectBrowserLogs,
-  wait
+  collectBrowserLogs
 } from '../utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('example', 'middleware-mode')
@@ -24,7 +23,6 @@ const startVite = async () => {
     viteDevProcess.stderr,
     'Open your browser.'
   )
-  await wait(100)
 
   return async () => {
     try {

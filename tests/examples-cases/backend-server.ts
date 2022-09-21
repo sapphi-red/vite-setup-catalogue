@@ -8,8 +8,7 @@ import {
   ports,
   collectAndWaitUntilOutput,
   gotoAndWaitForHMRConnection,
-  collectBrowserLogs,
-  wait
+  collectBrowserLogs
 } from '../utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('example', 'backend-server')
@@ -35,7 +34,6 @@ const startVite = async () => {
       'Open your browser.'
     )
   ])
-  await wait(100)
 
   return async () => {
     try {
