@@ -131,11 +131,6 @@ export const collectBrowserLogs = (page: Page) => {
       }
     }
     browserLogs.push({ type, text })
-    console.log(
-      `[test: ${JSON.stringify(
-        currentTestTitle
-      )}][Browser console error] ${type}: ${text}`
-    )
   })
 }
 
@@ -243,7 +238,7 @@ export const runDockerCompose = async (
         { cwd }
       )
       await new Promise<void>((resolve, reject) => {
-        downProcess.on('exit', code => {
+        downProcess.once('exit', code => {
           if (code !== null && code !== 0) {
             reject(
               new Error(`docker compose down failed with exit code ${code}`)
