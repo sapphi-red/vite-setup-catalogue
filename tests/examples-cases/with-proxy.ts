@@ -9,7 +9,8 @@ import {
   runDockerCompose,
   gotoAndWaitForHMRConnection,
   collectBrowserLogs,
-  printRecordedLogs
+  printRecordedLogs,
+  waitForHMRPolling
 } from '../utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('example', 'with-proxy')
@@ -28,13 +29,13 @@ const startVite = async () => {
     dockerComposeProcess,
     'stdout',
     /Attaching to .+-caddy-\d+, .+-vite-\d+/,
-    { timeout: process.env.CI ? 60000 : 20000 } // pulling image might take long
+    { timeout: 30000 } // pulling image might take long
   )
   await waitUntilOutput(
     dockerComposeProcess,
     'stdout',
     'Network:',
-    { timeout: process.env.CI ? 60000 : 20000 } // npm i might take long
+    { timeout: 30000 } // npm i might take long
   )
 
   return async () => {
@@ -66,7 +67,7 @@ test('hmr test', async ({ page }) => {
   }
 })
 
-test('restart test', async ({ page }) => {
+test.fixme('restart test', async ({ page }) => {
   let finishVite1: (() => Promise<void>) | undefined
   let finishVite2: (() => Promise<void>) | undefined
 
@@ -74,11 +75,10 @@ test('restart test', async ({ page }) => {
     finishVite1 = await startVite()
     await setupAndGotoPage(page)
 
-    const navigationPromise = page.waitForNavigation()
-
-    await finishVite1()
+    await Promise.all([waitForHMRPolling(page), finishVite1()])
     finishVite1 = undefined
 
+    const navigationPromise = page.waitForNavigation({ timeout: 10000 })
     finishVite2 = await startVite()
 
     await navigationPromise
