@@ -6,7 +6,7 @@ const config: PlaywrightTestConfig = {
   globalTeardown: './globalTeardown.ts',
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  timeout: process.env.CI ? 180 * 1000 : undefined,
+  timeout: process.env.CI ? 60 * 1000 : undefined,
   testDir: '.',
   testMatch: '{examples-cases,fixtures-cases}/**/*.ts',
   use: {
