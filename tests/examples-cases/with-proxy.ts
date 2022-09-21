@@ -82,12 +82,8 @@ test('restart test', async ({ page }) => {
     await setupAndGotoPage(page)
     console.log(`s${i++}`)
 
-    const hmrPollingPromise = waitForHMRPolling(page)
-    await finishVite1()
+    await Promise.all([waitForHMRPolling(page), finishVite1()])
     finishVite1 = undefined
-    console.log(`s${i++}`)
-
-    await hmrPollingPromise
     console.log(`s${i++}`)
 
     const navigationPromise = page.waitForNavigation({ timeout: 10000 })

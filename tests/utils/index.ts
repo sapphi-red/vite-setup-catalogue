@@ -170,10 +170,11 @@ export const waitForHMRConnection = async (page: Page, timeout?: number) => {
   }
 }
 
-export const waitForHMRPolling = async (page: Page, timeout = 10000) => {
+export const waitForHMRPolling = async (page: Page, timeout = 30000) => {
   try {
     await page.waitForEvent('console', {
-      predicate: msg => msg.text() === '[vite] server connection lost. polling for restart...',
+      predicate: msg =>
+        msg.text() === '[vite] server connection lost. polling for restart...',
       timeout
     })
   } catch (e) {
