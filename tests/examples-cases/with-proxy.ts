@@ -67,7 +67,7 @@ test('hmr test', async ({ page }) => {
   }
 })
 
-test.fixme('restart test', async ({ page }) => {
+test('restart test', async ({ page }) => {
   let finishVite1: (() => Promise<void>) | undefined
   let finishVite2: (() => Promise<void>) | undefined
 
