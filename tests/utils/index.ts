@@ -131,6 +131,11 @@ export const collectBrowserLogs = (page: Page) => {
       }
     }
     browserLogs.push({ type, text })
+    console.log(
+      `[test: ${JSON.stringify(
+        currentTestTitle
+      )}][Browser console error] ${type}: ${text}`
+    )
   })
 }
 
