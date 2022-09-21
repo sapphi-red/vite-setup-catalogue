@@ -28,13 +28,13 @@ const startVite = async () => {
     dockerComposeProcess,
     'stdout',
     /Attaching to .+-caddy-\d+, .+-vite-\d+/,
-    { timeout: 60000 } // pulling image might take long
+    { timeout: 30000 } // pulling image might take long
   )
   await waitUntilOutput(
     dockerComposeProcess,
     'stdout',
     'Network:',
-    { timeout: 60000 } // npm i might take long
+    { timeout: 30000 } // npm i might take long
   )
 
   return async () => {
