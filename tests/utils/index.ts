@@ -232,7 +232,7 @@ export const runDockerCompose = async (
       recordedLogs.push('------')
     },
     down: async () => {
-      process.kill()
+      process.kill('SIGINT')
 
       const downProcess = spawn(
         'docker',
