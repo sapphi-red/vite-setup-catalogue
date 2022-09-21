@@ -122,15 +122,20 @@ export const collectBrowserLogs = (page: Page) => {
     const type = msg.type()
     const text = msg.text()
     if (type === 'error') {
-      // if (isDebug) {
-      console.info(
-        `[test: ${JSON.stringify(
-          currentTestTitle
-        )}][Browser console error] ${text}`
-      )
-      // }
+      if (isDebug) {
+        console.info(
+          `[test: ${JSON.stringify(
+            currentTestTitle
+          )}][Browser console error] ${text}`
+        )
+      }
     }
     browserLogs.push({ type, text })
+    console.log(
+      `[test: ${JSON.stringify(
+        currentTestTitle
+      )}][Browser console error](${type}) ${text}`
+    )
   })
 }
 
