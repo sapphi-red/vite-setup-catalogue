@@ -42,6 +42,7 @@ const startVite = async () => {
   console.log('[docker-compose] detected vite start')
 
   return async () => {
+    console.log('[docker-compose] down command')
     dockerComposeProcess.recordLogs()
     await dockerComposeProcess.down()
   }
