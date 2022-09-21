@@ -210,11 +210,12 @@ export const runDockerCompose = async (
       recordedLogs.push('------')
     },
     down: async () => {
+      process.once('exit', () => {
+        console.log('!!! exit')
+      })
       process.kill()
-      await new Promise<void>(resolve => {
-        process.once('exit', () => {
-          resolve()
-        })
+      process.once('exit', () => {
+        console.log('??? exit')
       })
 
       const downProcess = spawn(
@@ -222,14 +223,19 @@ export const runDockerCompose = async (
         `compose ${options} down`.split(' '),
         { cwd }
       )
+      console.log('start down')
       await new Promise<void>((resolve, reject) => {
         downProcess.once('exit', code => {
+          console.log('!!! once end down')
           if (code !== null && code !== 0) {
             reject(
               new Error(`docker compose down failed with exit code ${code}`)
             )
           }
           resolve()
+        })
+        downProcess.on('exit', () => {
+          console.log('??? on end down')
         })
       })
     }
