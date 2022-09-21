@@ -211,6 +211,11 @@ export const runDockerCompose = async (
     },
     down: async () => {
       process.kill()
+      await new Promise<void>(resolve => {
+        process.once('exit', () => {
+          resolve()
+        })
+      })
 
       const downProcess = spawn(
         'docker',
