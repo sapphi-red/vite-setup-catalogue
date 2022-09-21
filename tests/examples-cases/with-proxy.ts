@@ -87,7 +87,7 @@ test('restart test', async ({ page }) => {
     finishVite1 = undefined
     console.log(`s${i++}`)
 
-    const res = await page.request.get('/index.html')
+    const res = await page.request.get(`${accessURL}index.html`)
     console.log('req', (await res.body()).toString())
 
     const navigationPromise = page.waitForNavigation({ timeout: 10000 })
