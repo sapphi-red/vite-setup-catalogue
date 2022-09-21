@@ -23,6 +23,8 @@ jobs:
 
       - name: show docker version
         run: docker version
+      - name: show docker compose version
+        run: docker compose version
 
       - name: install pnpm
         uses: pnpm/action-setup@v3
@@ -67,6 +69,8 @@ jobs:
 
       - name: show docker version
         run: docker version
+      - name: show docker compose version
+        run: docker compose version
 
       - name: install pnpm
         uses: pnpm/action-setup@v3
