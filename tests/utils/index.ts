@@ -232,7 +232,10 @@ export const runDockerCompose = async (
       recordedLogs.push('------')
     },
     down: async () => {
-      process.kill('SIGINT')
+      const success = process.kill('SIGINT')
+      if (!success) {
+        console.warn('failed to sigint docker compose')
+      }
 
       const downProcess = spawn(
         'docker',
