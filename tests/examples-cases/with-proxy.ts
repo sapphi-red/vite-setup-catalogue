@@ -25,24 +25,20 @@ const startVite = async () => {
     `-p with-proxy-dev -f compose.dev.yaml${overrideFile}`,
     workspaceFileURL
   )
-  console.log('[docker-compose] up command')
   await waitUntilOutput(
     dockerComposeProcess,
     'stdout',
     /Attaching to .+-caddy-\d+, .+-vite-\d+/,
     { timeout: 30000 } // pulling image might take long
   )
-  console.log('[docker-compose] detected container start')
   await waitUntilOutput(
     dockerComposeProcess,
     'stdout',
     'Network:',
     { timeout: 30000 } // npm i might take long
   )
-  console.log('[docker-compose] detected vite start')
 
   return async () => {
-    console.log('[docker-compose] down command')
     dockerComposeProcess.recordLogs()
     await dockerComposeProcess.down()
   }
