@@ -12,6 +12,7 @@ import {
   printRecordedLogs,
   waitForHMRPolling
 } from '../utils/index.js'
+import { execSync } from 'child_process'
 
 const workspaceFileURL = getWorkspaceFileURL('example', 'with-proxy')
 const accessURL = `http://localhost:${ports.withProxy}/`
@@ -86,6 +87,9 @@ test('restart test', async ({ page }) => {
     await Promise.all([waitForHMRPolling(page), finishVite1()])
     finishVite1 = undefined
     console.log(`s${i++}`)
+
+    console.log('---ps---')
+    console.log(execSync('ps lx'))
 
     const navigationPromise = page.waitForNavigation({ timeout: 10000 })
     console.log(`s${i++}`)
