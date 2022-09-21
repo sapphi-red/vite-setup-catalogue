@@ -210,12 +210,12 @@ export const runDockerCompose = async (
       recordedLogs.push('------')
     },
     down: async () => {
-      process.kill()
-      await new Promise<void>(resolve =>
+      await new Promise<void>(resolve => {
         process.once('exit', () => {
           resolve()
         })
-      )
+        process.kill()
+      })
 
       const downProcess = spawn(
         'docker',
