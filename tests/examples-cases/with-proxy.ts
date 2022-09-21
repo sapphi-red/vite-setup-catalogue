@@ -73,21 +73,32 @@ test('restart test', async ({ page }) => {
   let finishVite1: (() => Promise<void>) | undefined
   let finishVite2: (() => Promise<void>) | undefined
 
+  let i = 0
   try {
+    console.log(`s${i++}`)
     finishVite1 = await startVite()
+    console.log(`s${i++}`)
     await setupAndGotoPage(page)
+    console.log(`s${i++}`)
 
     const navigationPromise = page.waitForNavigation({ timeout: 10000 })
+    console.log(`s${i++}`)
 
     await finishVite1()
     finishVite1 = undefined
+    console.log(`s${i++}`)
 
     finishVite2 = await startVite()
+    console.log(`s${i++}`)
 
     await navigationPromise
+    console.log(`s${i++}`)
   } finally {
+    console.log(`sf`)
     await finishVite1?.()
+    console.log(`sfv`)
     await finishVite2?.()
+    console.log(`sfv2`)
   }
 })
 

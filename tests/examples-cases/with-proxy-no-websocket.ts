@@ -57,26 +57,18 @@ const setupAndGotoPage = async (page: Page) => {
 test('hmr test', async ({ page }) => {
   const finishVite = await startVite()
   try {
-    let i = 0
-    console.log(`s${i++}`)
     await setupAndGotoPage(page)
 
-    console.log(`s${i++}`)
     const title = page.locator('h1')
     await expect(title).toHaveText('Hello Vite!')
-    console.log(`s${i++}`)
 
     await editFile('./src/main.js', workspaceFileURL, content =>
       content.replace('Vite!</h1>', 'Vite!!!</h1>')
     )
-    console.log(`s${i++}`)
 
     await expect(title).toHaveText('Hello Vite!!!')
-    console.log(`s${i++}`)
   } finally {
-    console.log(`sf`)
     await finishVite()
-    console.log(`sfv`)
   }
 })
 
