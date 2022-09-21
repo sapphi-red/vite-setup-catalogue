@@ -81,7 +81,7 @@ test('restart test', async ({ page }) => {
     finishVite1 = await startVite()
     await setupAndGotoPage(page)
 
-    await Promise.all([waitForHMRPolling(page, 'with-proxy-no-websocket'), finishVite1()])
+    await Promise.all([waitForHMRPolling(page), finishVite1()])
     finishVite1 = undefined
 
     const navigationPromise = page.waitForNavigation({ timeout: 10000 })
