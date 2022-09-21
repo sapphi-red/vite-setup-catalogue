@@ -82,7 +82,7 @@ test('restart test', async ({ page }) => {
     await setupAndGotoPage(page)
     console.log(`s${i++}`)
 
-    await Promise.all([waitForHMRPolling(page), finishVite1()])
+    await Promise.all([waitForHMRPolling(page, 'with-proxy'), finishVite1()])
     finishVite1 = undefined
     console.log(`s${i++}`)
 

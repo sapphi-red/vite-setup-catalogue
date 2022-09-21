@@ -170,7 +170,7 @@ export const waitForHMRConnection = async (page: Page, timeout?: number) => {
   }
 }
 
-export const waitForHMRPolling = async (page: Page, timeout = 30000) => {
+export const waitForHMRPolling = async (page: Page, s: string, timeout = 30000) => {
   try {
     await page.waitForEvent('console', {
       predicate: msg =>
@@ -180,7 +180,7 @@ export const waitForHMRPolling = async (page: Page, timeout = 30000) => {
   } catch (e) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((e as any).name === 'TimeoutError') {
-      console.warn('waitForHMRPolling timeout:', browserLogs)
+      console.warn(`waitForHMRPolling(${s}) timeout:`, browserLogs)
     } else {
       throw e
     }
