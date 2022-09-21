@@ -67,27 +67,33 @@ export const collectAndWaitUntilOutput = async (
   match: string | RegExp,
   options?: { intervals?: number[]; timeout?: number }
 ) => {
-  const stdoutC = collectOutput(stdout)
-  const stderrC = collectOutput(stderr)
-  await waitUntilOutput(stdoutC, stderrC, match, options)
+  await waitUntilOutput(
+    { stdout: collectOutput(stdout), stderr: collectOutput(stderr) },
+    'stdout',
+    match,
+    options
+  )
 }
 
 type CollectedOutput = { total: string }
 
 export const waitUntilOutput = async (
-  stdout: CollectedOutput,
-  stderr: CollectedOutput,
+  stdouts: { stdout: CollectedOutput; stderr: CollectedOutput },
+  outType: 'stdout' | 'stderr',
   match: string | RegExp,
   options?: { intervals?: number[]; timeout?: number }
 ) => {
   try {
-    await expect.poll(() => stripAnsi(stdout.total), options).toMatch(match)
+    await expect
+      .poll(() => stripAnsi(stdouts[outType].total), options)
+      .toMatch(match)
   } catch (e) {
     throw new Error(
       `${e}\n` +
         `Expected output not found. Output:\n${stripAnsi(
-          stdout.total
-        )}\nError Output:\n${stripAnsi(stderr.total)}`
+          stdouts.stdout.total
+        )}\n` +
+        `Error Output:\n${stripAnsi(stdouts.stderr.total)}`
     )
   }
 }
@@ -167,10 +173,22 @@ export type DockerComposeProcess = {
   down: () => Promise<void>
 }
 
-export const runDockerCompose = (
+export const runDockerCompose = async (
   options: string,
   cwd: string | URL
-): DockerComposeProcess => {
+): Promise<DockerComposeProcess> => {
+  // ensure there isn't any conflict with container name
+  await new Promise<void>(resolve => {
+    const downProcess = spawn(
+      'docker',
+      `compose ${options} down`.split(' '),
+      { cwd }
+    )
+    downProcess.once('exit', () => {
+      resolve()
+    })
+  })
+
   const process = spawn(
     'docker',
     `compose ${options} up --abort-on-container-exit`.split(' '),
@@ -202,7 +220,7 @@ export const runDockerCompose = (
         { cwd }
       )
       await new Promise<void>((resolve, reject) => {
-        downProcess.on('exit', code => {
+        downProcess.once('exit', code => {
           if (code !== null && code !== 0) {
             reject(
               new Error(`docker compose down failed with exit code ${code}`)

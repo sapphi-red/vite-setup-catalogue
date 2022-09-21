@@ -20,13 +20,19 @@ const startVite = async () => {
     ? ' -f compose.node-modules-outside-container.yaml'
     : ''
 
-  const dockerComposeProcess = runDockerCompose(
+  const dockerComposeProcess = await runDockerCompose(
     `-p with-proxy-dev -f compose.dev.yaml${overrideFile}`,
     workspaceFileURL
   )
   await waitUntilOutput(
-    dockerComposeProcess.stdout,
-    dockerComposeProcess.stderr,
+    dockerComposeProcess,
+    'stdout',
+    /Attaching to .+-caddy-\d+, .+-vite-\d+/,
+    { timeout: process.env.CI ? 60000 : 20000 } // pulling image might take long
+  )
+  await waitUntilOutput(
+    dockerComposeProcess,
+    'stdout',
     'Network:',
     { timeout: process.env.CI ? 60000 : 20000 } // npm i might take long
   )
