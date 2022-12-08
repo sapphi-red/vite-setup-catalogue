@@ -17,7 +17,6 @@ services:
       - .:/app
       - node_modules:/app/node_modules
     working_dir: /app
-    tty: true
     command: bash -c "npm i && npm run dev"
 
 volumes:
