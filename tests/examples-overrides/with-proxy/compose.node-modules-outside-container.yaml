@@ -7,4 +7,5 @@ services:
       - ../../node_modules:/repo-root/node_modules
       - .:/repo-root/examples/with-proxy
     working_dir: /repo-root/examples/with-proxy
+    tty: true
     command: npm run dev
