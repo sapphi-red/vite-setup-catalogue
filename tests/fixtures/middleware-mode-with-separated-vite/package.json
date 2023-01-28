@@ -1,0 +1,13 @@
+{
+  "name": "middleware-mode-with-separated-vite",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "node server.js"
+  },
+  "devDependencies": {
+    "connect": "^3.7.0",
+    "vite": "^4.1.0-beta.1"
+  }
+}

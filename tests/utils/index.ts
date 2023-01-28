@@ -290,5 +290,6 @@ export const ports = {
   withProxyNoWebSocket: 3040, // vite: 5193
 
   /* fixtures */
-  backendHttpsViteHttp: 7002 // vite: 7001
+  backendHttpsViteHttp: 7002, // vite: 7001
+  middlewareModeWithSeparatedVite: 7004 // vite: 7003
 }

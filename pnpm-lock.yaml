@@ -96,6 +96,14 @@ importers:
     devDependencies:
       vite: 4.1.0-beta.1
 
+  tests/fixtures/middleware-mode-with-separated-vite:
+    specifiers:
+      connect: ^3.7.0
+      vite: ^4.1.0-beta.1
+    devDependencies:
+      connect: 3.7.0
+      vite: 4.1.0-beta.1
+
 packages:
 
   /@esbuild/android-arm/0.16.17:
