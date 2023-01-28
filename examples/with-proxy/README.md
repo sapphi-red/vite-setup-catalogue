@@ -52,3 +52,7 @@ docker compose -p with-proxy-prod -f compose.prod.yaml up
 Set `"connect:dispatcher"` to `DEBUG` env variable to log what request is coming to Vite server.
 
 For example, when an access is coming to `//@vite/client`, something is wrong with your proxy configuration.
+
+### WSL2 (including Docker with WSL2 backend)
+
+When using WSL2 (including Docker with WSL2 backend), you might need to configure `server.watch`. See [`server.watch`](https://vitejs.dev/config/server-options.html#server-watch) docs for more details.
