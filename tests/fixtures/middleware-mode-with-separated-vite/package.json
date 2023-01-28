@@ -4,8 +4,7 @@
   "type": "module",
   "version": "0.0.0",
   "scripts": {
-    "dev:vite": "vite dev",
-    "dev:backend": "node server.js"
+    "dev": "node server.js"
   },
   "devDependencies": {
     "connect": "^3.7.0",

@@ -18,32 +18,18 @@ const workspaceFileURL = getWorkspaceFileURL(
 const accessURL = `http://localhost:${ports.middlewareModeWithSeparatedVite}/`
 
 const startVite = async () => {
-  // pnpm run dev cannot be used because killing process does not work
-  const viteDevProcess = spawn('pnpm', ['run', 'dev:vite'], {
+  const viteDevProcess = spawn('pnpm', ['run', 'dev'], {
     cwd: workspaceFileURL
   })
-  const backendProcess = spawn('pnpm', ['run', 'dev:backend'], {
-    cwd: workspaceFileURL
-  })
-  await Promise.all([
-    collectAndWaitUntilOutput(
-      viteDevProcess.stdout,
-      viteDevProcess.stderr,
-      'use --host to expose'
-    ),
-    collectAndWaitUntilOutput(
-      backendProcess.stdout,
-      backendProcess.stderr,
-      'Open your browser.'
-    )
-  ])
+  await collectAndWaitUntilOutput(
+    viteDevProcess.stdout,
+    viteDevProcess.stderr,
+    'Open your browser.'
+  )
 
   return async () => {
     try {
       await killProcess(viteDevProcess)
-    } catch {}
-    try {
-      await killProcess(backendProcess)
     } catch {}
   }
 }
