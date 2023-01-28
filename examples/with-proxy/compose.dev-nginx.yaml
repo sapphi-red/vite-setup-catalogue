@@ -10,7 +10,7 @@ services:
       - ./docker/nginx/:/etc/nginx/conf.d/:ro
 
   vite:
-    image: node:16
+    image: node:18
     restart: unless-stopped
     volumes:
       - .:/app
