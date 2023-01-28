@@ -41,7 +41,6 @@ const setupExamples = async () => {
     url.fileURLToPath(src),
     url.fileURLToPath(exampleTempDir),
     {
-      recursive: true,
       dereference: false
     }
   )
@@ -49,7 +48,6 @@ const setupExamples = async () => {
     url.fileURLToPath(overrideSrc),
     url.fileURLToPath(exampleTempDir),
     {
-      recursive: true,
       dereference: false
     }
   )
@@ -75,7 +73,6 @@ const setupFixtures = async () => {
     url.fileURLToPath(src),
     url.fileURLToPath(fixtureTempDir),
     {
-      recursive: true,
       dereference: false
     }
   )
