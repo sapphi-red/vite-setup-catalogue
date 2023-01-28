@@ -78,7 +78,7 @@ test.fixme('restart test', async ({ page }) => {
     await Promise.all([waitForHMRPolling(page), finishVite1()])
     finishVite1 = undefined
 
-    const navigationPromise = page.waitForNavigation({ timeout: 10000 })
+    const navigationPromise = page.waitForURL(accessURL, { timeout: 10000 })
     finishVite2 = await startVite()
 
     await navigationPromise
