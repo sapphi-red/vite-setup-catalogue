@@ -11,7 +11,7 @@ const connect = Connect()
 
 connect.use(middlewares)
 
-const server = connect.listen(7003, 'localhost')
+const server = connect.listen(7004, 'localhost')
 server.on('listening', () => {
   const addr = server.address()
   console.log(`Listening on http://localhost:${addr.port}`)

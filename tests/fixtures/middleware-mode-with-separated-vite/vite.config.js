@@ -2,7 +2,12 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   server: {
-    port: 7004,
-    strictPort: true
+    port: 7003,
+    strictPort: true,
+    // for consistency
+    watch: {
+      usePolling: true,
+      interval: 100
+    }
   }
 })

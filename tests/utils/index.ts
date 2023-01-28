@@ -291,5 +291,5 @@ export const ports = {
 
   /* fixtures */
   backendHttpsViteHttp: 7002, // vite: 7001
-  middlewareModeWithSeparatedVite: 7003 // vite: 7004
+  middlewareModeWithSeparatedVite: 7004 // vite: 7003
 }
