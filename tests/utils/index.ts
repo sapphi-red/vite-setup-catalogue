@@ -196,9 +196,13 @@ export const runDockerCompose = async (
 ): Promise<DockerComposeProcess> => {
   // ensure there isn't any conflict with container name
   await new Promise<void>(resolve => {
-    const downProcess = spawn('docker', `compose ${options} -v down`.split(' '), {
-      cwd
-    })
+    const downProcess = spawn(
+      'docker',
+      `compose ${options} -v down`.split(' '),
+      {
+        cwd
+      }
+    )
     downProcess.once('exit', () => {
       resolve()
     })
