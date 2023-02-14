@@ -83,7 +83,12 @@ async function globalSetup(_config: FullConfig) {
     console.warn('Warning: Using local node_modules. It only works with linux.')
   }
 
-  await Promise.all([setupExamples(), setupFixtures()])
+  try {
+    await Promise.all([setupExamples(), setupFixtures()])
+  } catch (e) {
+    console.error('globalSetup error')
+    throw e
+  }
 }
 
 export default globalSetup
