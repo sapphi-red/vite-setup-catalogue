@@ -86,7 +86,7 @@ async function globalSetup(_config: FullConfig) {
   try {
     await Promise.all([setupExamples(), setupFixtures()])
   } catch (e) {
-    console.error('globalSetup error', e)
+    console.error('globalSetup error')
     throw e
   }
 }

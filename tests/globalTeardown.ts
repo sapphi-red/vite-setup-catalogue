@@ -8,8 +8,7 @@ async function globalTeardown(_config: FullConfig) {
       await fs.rm(exampleTempDir, { force: true, recursive: true })
       await fs.rm(fixtureTempDir, { force: true, recursive: true })
     } catch (e) {
-      console.error('globalTeardown error', e)
-      throw e
+      console.warn('globalTeardown error', e)
     }
   }
 }
