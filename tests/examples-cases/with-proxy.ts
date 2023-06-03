@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test'
-import type { Page } from '@playwright/test'
 import {
   editFile,
   getWorkspaceFileURL,
@@ -7,10 +6,9 @@ import {
   waitUntilOutput,
   useNodeModulesOutsideContainer,
   runDockerCompose,
-  gotoAndWaitForHMRConnection,
-  collectBrowserLogs,
   printRecordedLogs,
-  waitForHMRPolling
+  waitForHMRPolling,
+  createSetupAndGotoPage
 } from '../utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL('example', 'with-proxy')
@@ -44,10 +42,7 @@ const startVite = async () => {
   }
 }
 
-const setupAndGotoPage = async (page: Page) => {
-  collectBrowserLogs(page)
-  await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 1000 })
-}
+const setupAndGotoPage = createSetupAndGotoPage(accessURL, 1000)
 
 test('hmr test', async ({ page }) => {
   const finishVite = await startVite()
@@ -73,15 +68,15 @@ test.fixme('restart test', async ({ page }) => {
 
   try {
     finishVite1 = await startVite()
-    await setupAndGotoPage(page)
+    await setupAndGotoPage(page, { waitUntil: 'load' })
 
     await Promise.all([waitForHMRPolling(page), finishVite1()])
     finishVite1 = undefined
 
-    const navigationPromise = page.waitForURL(accessURL, { timeout: 10000 })
+    const loadPromise = page.waitForEvent('load', { timeout: 10000 })
     finishVite2 = await startVite()
 
-    await navigationPromise
+    await loadPromise
   } finally {
     await finishVite1?.()
     await finishVite2?.()
