@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test'
-import type { Page } from '@playwright/test'
 import { spawn } from 'cross-spawn'
 import {
   editFile,
@@ -7,8 +6,7 @@ import {
   killProcess,
   ports,
   collectAndWaitUntilOutput,
-  gotoAndWaitForHMRConnection,
-  collectBrowserLogs
+  createSetupAndGotoPage
 } from '../utils/index.js'
 
 const workspaceFileURL = getWorkspaceFileURL(
@@ -48,10 +46,7 @@ const startVite = async () => {
   }
 }
 
-const setupAndGotoPage = async (page: Page) => {
-  collectBrowserLogs(page)
-  await gotoAndWaitForHMRConnection(page, accessURL, { timeout: 1000 })
-}
+const setupAndGotoPage = createSetupAndGotoPage(accessURL, 1000)
 
 test('hmr test', async ({ page }) => {
   const finishVite = await startVite()
@@ -77,16 +72,16 @@ test('restart test', async ({ page }) => {
 
   try {
     finishVite1 = await startVite()
-    await setupAndGotoPage(page)
+    await setupAndGotoPage(page, { waitUntil: 'load' })
 
-    const navigationPromise = page.waitForURL(accessURL, { timeout: 3000 })
+    const loadPromise = page.waitForEvent('load', { timeout: 3000 })
 
     await finishVite1()
     finishVite1 = undefined
 
     finishVite2 = await startVite()
 
-    await navigationPromise
+    await loadPromise
   } finally {
     await finishVite1?.()
     await finishVite2?.()

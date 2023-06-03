@@ -134,6 +134,23 @@ export const collectBrowserLogs = (page: Page) => {
   })
 }
 
+export const createSetupAndGotoPage =
+  (accessURL: string, timeout: number) =>
+  async (
+    page: Page,
+    {
+      waitUntil
+    }: {
+      waitUntil?: 'load' | 'domcontentloaded' | 'networkidle' | 'commit'
+    } = {}
+  ) => {
+    collectBrowserLogs(page)
+    await gotoAndWaitForHMRConnection(page, accessURL, {
+      timeout,
+      waitUntil
+    })
+  }
+
 type GotoOptions = Parameters<Page['goto']>[1]
 
 export const gotoAndWaitForHMRConnection = async (
