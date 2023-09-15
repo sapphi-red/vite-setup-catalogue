@@ -3,6 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "postinstall": "pnpm --filter ./tests run install-playwright",
     "lint": "eslint --cache .",
     "format": "prettier --write --cache .",
     "type-check": "tsc --noEmit",
