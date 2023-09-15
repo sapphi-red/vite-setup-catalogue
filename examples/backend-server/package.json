@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5",
-    "vite": "^4.3.9"
+    "vite": "^4.4.9"
   },
   "dependencies": {
     "connect": "^3.7.0",
