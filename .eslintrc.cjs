@@ -27,13 +27,16 @@ module.exports = {
       extends: [
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
+        'plugin:@typescript-eslint/stylistic',
         'plugin:vitest/recommended',
         'prettier'
       ],
       rules: {
         'no-empty': ['error', { allowEmptyCatch: true }],
         '@typescript-eslint/no-unused-vars': 'off',
-        '@typescript-eslint/consistent-type-imports': 'error'
+        '@typescript-eslint/consistent-type-imports': 'error',
+        '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
+        '@typescript-eslint/consistent-type-definitions': ['error', 'type']
       }
     },
     {
