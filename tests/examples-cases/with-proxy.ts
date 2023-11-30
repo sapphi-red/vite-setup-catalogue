@@ -26,7 +26,7 @@ const startVite = async () => {
   await waitUntilOutput(
     dockerComposeProcess,
     'stdout',
-    /Attaching to .+-caddy-\d+, .+-vite-\d+/,
+    /Attaching to (?:.+-)?caddy-\d+, (?:.+-)?vite-\d+/,
     { timeout: 30000 } // pulling image might take long
   )
   await waitUntilOutput(
