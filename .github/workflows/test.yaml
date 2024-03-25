@@ -51,7 +51,7 @@ jobs:
           echo "PLAYWRIGHT_VERSION=$env:PLAYWRIGHT_VERSION" >> $env:GITHUB_ENV
 
       - name: Cache Playwright's binary
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: ${{ runner.os }}-playwright-bin-v1-${{ env.PLAYWRIGHT_VERSION }}
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
@@ -97,7 +97,7 @@ jobs:
         run: echo "PLAYWRIGHT_BROWSERS_PATH=$HOME\.cache\playwright-bin" >> $env:GITHUB_ENV
 
       - name: Cache Playwright's binary
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           # Playwright removes unused browsers automatically
           # So does not need to add playwright version to key
