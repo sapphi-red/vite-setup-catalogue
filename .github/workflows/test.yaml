@@ -27,7 +27,7 @@ jobs:
         run: docker compose version
 
       - name: install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v3
       - name: setup Node
         uses: actions/setup-node@v3
         with:
@@ -79,7 +79,7 @@ jobs:
         run: docker compose version
 
       - name: install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v3
       - name: setup Node
         uses: actions/setup-node@v3
         with:
