@@ -9,7 +9,7 @@ services:
       - ./docker/apache/extra/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf:ro
 
   vite:
-    image: node:18
+    image: node:20
     restart: unless-stopped
     volumes:
       - .:/app
