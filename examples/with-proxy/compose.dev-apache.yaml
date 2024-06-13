@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   apache:
     image: httpd:2.4
