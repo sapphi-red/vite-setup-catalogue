@@ -7,7 +7,7 @@ import kill from 'tree-kill'
 import fs from 'fs/promises'
 import { spawn } from 'cross-spawn'
 import type { Page } from '@playwright/test'
-import { test, expect } from '@playwright/test'
+import { test, expect, errors } from '@playwright/test'
 
 export const isDebug = process.env.DEBUG === '1'
 
@@ -190,8 +190,7 @@ export const waitForHMRPolling = async (page: Page, timeout = 30000) => {
       timeout
     })
   } catch (e) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if ((e as any).name === 'TimeoutError') {
+    if (e instanceof errors.TimeoutError) {
       console.warn('waitForHMRPolling timeout:', browserLogs)
     } else {
       throw e
