@@ -264,6 +264,7 @@ export const runDockerCompose = async (
             reject(
               new Error(`docker compose down failed with exit code ${code}`)
             )
+            return
           }
           resolve()
         })
