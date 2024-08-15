@@ -22,7 +22,7 @@ if (isDev) {
 } else {
   const manifest = JSON.parse(
     await fs.readFile(
-      new URL('../dist/manifest.json', import.meta.url),
+      new URL('../dist/.vite/manifest.json', import.meta.url),
       'utf-8'
     )
   )
