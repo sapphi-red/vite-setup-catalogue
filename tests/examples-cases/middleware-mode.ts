@@ -72,14 +72,17 @@ test('restart test', async ({ page }) => {
 })
 
 // https://github.com/vitejs/vite/pull/14127
-test('restart server by config change', async ({page}) => {
+test('restart server by config change', async ({ page }) => {
   const finishVite = await startVite()
   try {
     await setupAndGotoPage(page)
 
     // edit vite.config.js to restart server
     await editFile('./vite.config.js', workspaceFileURL, content =>
-      content.replace('export default defineConfig({', 'export default defineConfig({\n')
+      content.replace(
+        'export default defineConfig({',
+        'export default defineConfig({\n'
+      )
     )
 
     const title = page.locator('h1')
