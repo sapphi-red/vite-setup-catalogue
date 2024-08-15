@@ -71,9 +71,33 @@ test('restart test', async ({ page }) => {
   }
 })
 
+// https://github.com/vitejs/vite/pull/14127
+test('restart server by config change', async ({page}) => {
+  const finishVite = await startVite()
+  try {
+    await setupAndGotoPage(page)
+
+    // edit vite.config.js to restart server
+    await editFile('./vite.config.js', workspaceFileURL, content =>
+      content.replace('export default defineConfig({', 'export default defineConfig({\n')
+    )
+
+    const title = page.locator('h1')
+    await expect(title).toHaveText('Hello Vite!!!')
+
+    await editFile('./src/main.js', workspaceFileURL, content =>
+      content.replace('Vite!!!</h1>', 'Vite!!!!</h1>')
+    )
+
+    await expect(title).toHaveText('Hello Vite!!!!')
+  } finally {
+    await finishVite()
+  }
+})
+
 test.afterAll(async () => {
   // cleanup
   await editFile('./src/main.js', workspaceFileURL, content =>
-    content.replace('Vite!!!</h1>', 'Vite!</h1>')
+    content.replace('Vite!!!!</h1>', 'Vite!</h1>')
   )
 })
