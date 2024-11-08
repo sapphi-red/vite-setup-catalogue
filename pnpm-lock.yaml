@@ -2320,7 +2320,7 @@ packages:
     dev: true
 
   /vite@6.0.0-beta.9:
-    resolution: {integrity: sha512-xyZ/Csp8V53oEwf880uShn3k+tl1przygrQCnz7fje2zawR4P1Z9Wr2VM4noxLOHr/QVdvHSvjO6vBceAMhGUQ==}
+    resolution: {integrity: sha512-gMaa1/cnKw4xCv1QmPcBInF8D1I17a0/+kUDWuPLGm0ZuupFW2YKUU91DQFc4WwgvvEKFd+kNHin9+qlX0SeqQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
