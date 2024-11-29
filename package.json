@@ -9,7 +9,7 @@
     "type-check": "tsc --noEmit",
     "test-for-ecosystem-ci": "pnpm -F ./tests run test-local-node-modules"
   },
-  "packageManager": "pnpm@8.10.5",
+  "packageManager": "pnpm@9.14.3",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",
