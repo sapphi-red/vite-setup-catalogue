@@ -8,7 +8,7 @@
     "dev:backend": "node backend-src/index.js"
   },
   "devDependencies": {
-    "vite": "^6.0.0-beta.9"
+    "vite": "^6.0.0"
   },
   "dependencies": {
     "connect": "^3.7.0"
