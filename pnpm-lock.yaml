@@ -49,14 +49,14 @@ importers:
         specifier: ^7.0.1
         version: 7.0.1
       vite:
-        specifier: ^6.0.10
-        version: 6.0.10(@types/node@20.17.9)
+        specifier: ^6.0.11
+        version: 6.0.11(@types/node@20.17.9)
 
   examples/basic:
     devDependencies:
       vite:
-        specifier: ^6.0.10
-        version: 6.0.10(@types/node@20.17.9)
+        specifier: ^6.0.11
+        version: 6.0.11(@types/node@20.17.9)
 
   examples/middleware-mode:
     devDependencies:
@@ -64,20 +64,20 @@ importers:
         specifier: ^3.7.0
         version: 3.7.0
       vite:
-        specifier: ^6.0.10
-        version: 6.0.10(@types/node@20.17.9)
+        specifier: ^6.0.11
+        version: 6.0.11(@types/node@20.17.9)
 
   examples/with-proxy:
     devDependencies:
       vite:
-        specifier: ^6.0.10
-        version: 6.0.10(@types/node@20.17.9)
+        specifier: ^6.0.11
+        version: 6.0.11(@types/node@20.17.9)
 
   examples/with-proxy-no-websocket:
     devDependencies:
       vite:
-        specifier: ^6.0.10
-        version: 6.0.10(@types/node@20.17.9)
+        specifier: ^6.0.11
+        version: 6.0.11(@types/node@20.17.9)
 
   tests:
     devDependencies:
@@ -119,8 +119,8 @@ importers:
         version: 3.7.0
     devDependencies:
       vite:
-        specifier: ^6.0.10
-        version: 6.0.10(@types/node@20.17.9)
+        specifier: ^6.0.11
+        version: 6.0.11(@types/node@20.17.9)
 
   tests/fixtures/middleware-mode-with-separated-vite:
     devDependencies:
@@ -128,8 +128,8 @@ importers:
         specifier: ^3.7.0
         version: 3.7.0
       vite:
-        specifier: ^6.0.10
-        version: 6.0.10(@types/node@20.17.9)
+        specifier: ^6.0.11
+        version: 6.0.11(@types/node@20.17.9)
 
 packages:
 
@@ -1143,8 +1143,8 @@ packages:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
 
-  vite@6.0.10:
-    resolution: {integrity: sha512-MEszunEcMo6pFsfXN1GhCFQqnE25tWRH0MA4f0Q7uanACi4y1Us+ZGpTMnITwCTnYzB2b9cpmnelTlxgTBmaBA==}
+  vite@6.0.11:
+    resolution: {integrity: sha512-4VL9mQPKoHy4+FE0NnRE/kbY51TOfaknxAjt3fJbGJxhIpBZiqVzlZDEesWWsuREXHwNdAoOFZ9MkPEVXczHwg==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
     peerDependencies:
@@ -2111,7 +2111,7 @@ snapshots:
 
   utils-merge@1.0.1: {}
 
-  vite@6.0.10(@types/node@20.17.9):
+  vite@6.0.11(@types/node@20.17.9):
     dependencies:
       esbuild: 0.24.2
       postcss: 8.4.49
