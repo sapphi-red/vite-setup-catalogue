@@ -10,11 +10,6 @@ updates:
         update-types:
           - 'minor'
           - 'patch'
-      typescriptEslintMajor:
-        update-types:
-          - 'major'
-        patterns:
-          - '@typescript-eslint/*'
   - package-ecosystem: github-actions
     directory: /
     schedule:
