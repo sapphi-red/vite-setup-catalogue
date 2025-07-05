@@ -1,3 +1,5 @@
 packages:
   - .
+  - examples/*
   - tests
+  - tests/fixtures/*
