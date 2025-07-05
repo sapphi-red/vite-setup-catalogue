@@ -1,0 +1,20 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "schedule:monthly",
+    "group:allNonMajor",
+    "helpers:disableTypesNodeMajor"
+  ],
+  "labels": ["dependencies"],
+  "ignorePaths": ["**/node_modules/**"],
+  "rangeStrategy": "bump",
+  "packageRules": [
+    {
+      "matchDepTypes": ["action"],
+      "pinDigests": true,
+      "matchPackageNames": ["!actions/{/,}**", "!github/{/,}**"]
+    }
+  ],
+  "ignoreDeps": ["node"]
+}
