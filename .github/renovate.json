@@ -7,6 +7,7 @@
     "helpers:disableTypesNodeMajor"
   ],
   "labels": ["dependencies"],
+  "ignorePaths": ["**/node_modules/**"],
   "rangeStrategy": "bump",
   "packageRules": [
     {
