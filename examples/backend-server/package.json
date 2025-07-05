@@ -11,7 +11,7 @@
     "preview": "node backend-src/index.js"
   },
   "devDependencies": {
-    "npm-run-all2": "^7.0.1",
+    "npm-run-all2": "^8.0.4",
     "vite": "^6.0.11"
   },
   "dependencies": {
