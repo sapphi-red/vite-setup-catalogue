@@ -14,7 +14,7 @@
     "@types/cross-spawn": "^6.0.6",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.19.4",
-    "cross-env": "^7.0.3",
+    "cross-env": "^10.0.0",
     "cross-spawn": "^7.0.6",
     "fs-extra": "^11.3.0",
     "strip-ansi": "^7.1.0",
