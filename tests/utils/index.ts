@@ -2,7 +2,7 @@ import type {
   ChildProcess,
   ChildProcessWithoutNullStreams
 } from 'child_process'
-import stripAnsi from 'strip-ansi'
+import { stripVTControlCharacters } from 'node:util'
 import kill from 'tree-kill'
 import fs from 'fs/promises'
 import { spawn } from 'cross-spawn'
@@ -85,15 +85,15 @@ export const waitUntilOutput = async (
 ) => {
   try {
     await expect
-      .poll(() => stripAnsi(stdouts[outType].total), options)
+      .poll(() => stripVTControlCharacters(stdouts[outType].total), options)
       .toMatch(match)
   } catch (e) {
     throw new Error(
       `${e}\n` +
-        `Expected output not found. Output:\n${stripAnsi(
+        `Expected output not found. Output:\n${stripVTControlCharacters(
           stdouts.stdout.total
         )}\n` +
-        `Error Output:\n${stripAnsi(stdouts.stderr.total)}`
+        `Error Output:\n${stripVTControlCharacters(stdouts.stderr.total)}`
     )
   }
 }
@@ -241,10 +241,10 @@ export const runDockerCompose = async (
     recordLogs: () => {
       recordedLogs.push('------')
       recordedLogs.push('Docker compose stdout:')
-      recordedLogs.push(stripAnsi(stdout.total))
+      recordedLogs.push(stripVTControlCharacters(stdout.total))
       recordedLogs.push('------')
       recordedLogs.push('Docker compose stderr:')
-      recordedLogs.push(stripAnsi(stderr.total))
+      recordedLogs.push(stripVTControlCharacters(stderr.total))
       recordedLogs.push('------')
     },
     down: async () => {

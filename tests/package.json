@@ -17,7 +17,6 @@
     "cross-env": "^10.1.0",
     "cross-spawn": "^7.0.6",
     "fs-extra": "^11.3.2",
-    "strip-ansi": "^7.1.2",
     "tree-kill": "^1.2.2",
     "typescript": "^5.9.3"
   }
