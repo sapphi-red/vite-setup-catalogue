@@ -6,3 +6,5 @@ services:
       - .:/repo-root/examples/with-proxy-no-websocket
     working_dir: /repo-root/examples/with-proxy-no-websocket
     command: npm run dev
+    tty: true # to make the logs use colors
+    stdin_open: true # to keep the dev server running
