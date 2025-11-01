@@ -1,6 +1,6 @@
 services:
   nginx:
-    image: nginx:1.29.1
+    image: nginx:1.29.3
     restart: unless-stopped
     ports:
       - '3030:3000'
