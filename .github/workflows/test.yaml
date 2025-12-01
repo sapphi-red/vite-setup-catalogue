@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: show docker version
         run: docker version
@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: show docker version
         run: docker version
