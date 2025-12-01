@@ -9,15 +9,15 @@
     "type-check": "tsc --noEmit",
     "test-for-ecosystem-ci": "pnpm -F ./tests run test-local-node-modules"
   },
-  "packageManager": "pnpm@10.20.0",
+  "packageManager": "pnpm@10.24.0",
   "devDependencies": {
-    "@eslint/js": "^9.39.0",
-    "@vitest/eslint-plugin": "^1.4.0",
-    "eslint": "^9.39.0",
+    "@eslint/js": "^9.39.1",
+    "@vitest/eslint-plugin": "^1.5.1",
+    "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^16.5.0",
-    "prettier": "^3.6.2",
+    "prettier": "^3.7.3",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.2"
+    "typescript-eslint": "^8.48.0"
   }
 }
