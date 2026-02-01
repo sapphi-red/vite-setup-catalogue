@@ -12,12 +12,12 @@
   },
   "devDependencies": {
     "npm-run-all2": "^8.0.4",
-    "vite": "^7.2.4"
+    "vite": "^7.3.1"
   },
   "dependencies": {
     "connect": "^3.7.0",
     "cross-env": "^10.1.0",
     "ejs": "^3.1.10",
-    "serve-static": "^2.2.0"
+    "serve-static": "^2.2.1"
   }
 }
