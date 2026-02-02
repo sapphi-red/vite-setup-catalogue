@@ -10,13 +10,13 @@
     "test-debug": "cross-env DEBUG=1 playwright test"
   },
   "devDependencies": {
-    "@playwright/test": "^1.57.0",
+    "@playwright/test": "^1.58.1",
     "@types/cross-spawn": "^6.0.6",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^20.19.25",
+    "@types/node": "^20.19.30",
     "cross-env": "^10.1.0",
     "cross-spawn": "^7.0.6",
-    "fs-extra": "^11.3.2",
+    "fs-extra": "^11.3.3",
     "tree-kill": "^1.2.2",
     "typescript": "^5.9.3"
   }
