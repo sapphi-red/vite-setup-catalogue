@@ -17,7 +17,7 @@
   "dependencies": {
     "connect": "^3.7.0",
     "cross-env": "^10.1.0",
-    "ejs": "^3.1.10",
+    "ejs": "^5.0.1",
     "serve-static": "^2.2.1"
   }
 }
