@@ -53,7 +53,7 @@ export const getWorkspaceFileURL = (
 
 const collectOutput = (readable: NodeJS.ReadableStream): CollectedOutput => {
   const result = { total: '' }
-  ;(async () => {
+  void (async () => {
     for await (const chunk of readable) {
       result.total += chunk
     }
@@ -89,11 +89,11 @@ export const waitUntilOutput = async (
       .toMatch(match)
   } catch (e) {
     throw new Error(
-      `${e}\n` +
-        `Expected output not found. Output:\n${stripVTControlCharacters(
-          stdouts.stdout.total
-        )}\n` +
-        `Error Output:\n${stripVTControlCharacters(stdouts.stderr.total)}`
+      `Expected output not found. Output:\n${stripVTControlCharacters(
+        stdouts.stdout.total
+      )}\n` +
+        `Error Output:\n${stripVTControlCharacters(stdouts.stderr.total)}`,
+      { cause: e }
     )
   }
 }
@@ -173,8 +173,8 @@ export const waitForHMRConnection = async (page: Page, timeout?: number) => {
       timeout
     })
   } catch (e) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if ((e as any).name === 'TimeoutError') {
+    // oxlint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+    if ((e as Error).name === 'TimeoutError') {
       console.warn('waitForHMRConnection timeout:', browserLogs)
     } else {
       throw e

@@ -86,7 +86,7 @@ test('restart test', async ({ page }) => {
   }
 })
 
-// eslint-disable-next-line no-empty-pattern
+// oxlint-disable-next-line no-empty-pattern
 test.afterAll(async ({}, testInfo) => {
   if (testInfo.errors.length > 0 && testInfo.retry === 0) {
     printRecordedLogs()
