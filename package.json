@@ -4,20 +4,14 @@
   "private": true,
   "scripts": {
     "postinstall": "pnpm --filter ./tests run install-playwright",
-    "lint": "eslint --cache .",
-    "format": "prettier --write --cache .",
-    "type-check": "tsc --noEmit",
+    "lint": "oxlint --type-aware --type-check",
+    "format": "oxfmt .",
     "test-for-ecosystem-ci": "pnpm -F ./tests run test-local-node-modules"
   },
   "packageManager": "pnpm@10.33.0",
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
-    "@vitest/eslint-plugin": "^1.6.14",
-    "eslint": "^9.39.4",
-    "eslint-config-prettier": "^10.1.8",
-    "globals": "^17.4.0",
-    "prettier": "^3.8.1",
-    "typescript": "^6.0.2",
-    "typescript-eslint": "^8.58.0"
+    "oxfmt": "^0.43.0",
+    "oxlint": "^1.58.0",
+    "oxlint-tsgolint": "^0.19.0"
   }
 }
