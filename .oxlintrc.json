@@ -8,6 +8,7 @@
   "rules": {
     "no-empty": ["error", { "allowEmptyCatch": true }],
     "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "unicorn/consistent-function-scoping": "off",
     "typescript/consistent-type-imports": "error",
     "typescript/consistent-type-definitions": ["error", "type"],
     "typescript/array-type": ["error", { "default": "array-simple" }]
