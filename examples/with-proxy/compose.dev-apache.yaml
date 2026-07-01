@@ -1,6 +1,6 @@
 services:
   apache:
-    image: httpd:2.4.67
+    image: httpd:2.4.68
     restart: unless-stopped
     ports:
       - '3030:80'
