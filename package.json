@@ -10,8 +10,8 @@
   },
   "packageManager": "pnpm@10.34.5",
   "devDependencies": {
-    "oxfmt": "^0.61.0",
-    "oxlint": "^1.76.0",
+    "oxfmt": "^0.65.0",
+    "oxlint": "^1.80.0",
     "oxlint-tsgolint": "^0.25.0"
   }
 }
