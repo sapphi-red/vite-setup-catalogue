@@ -10,7 +10,7 @@ services:
       - caddy_config:/config
 
   vite:
-    image: node:20
+    image: node:24
     restart: unless-stopped
     volumes:
       - .:/app
