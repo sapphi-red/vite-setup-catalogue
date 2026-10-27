@@ -36,7 +36,7 @@ docker compose -p with-proxy-dev-apache -f compose.dev-apache.yaml up
 ### build
 
 ```shell
-docker run -w /app -v "$(pwd):/app" -v node_modules:/app/node_modules node:20 bash -c "npm i && npm run build"
+docker run -w /app -v "$(pwd):/app" -v node_modules:/app/node_modules node:24 bash -c "npm i && npm run build"
 ```
 
 ### preview
