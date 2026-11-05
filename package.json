@@ -8,10 +8,10 @@
     "format": "oxfmt .",
     "test-for-ecosystem-ci": "pnpm -F ./tests run test-local-node-modules"
   },
-  "packageManager": "pnpm@10.34.5",
+  "packageManager": "pnpm@10.34.9",
   "devDependencies": {
-    "oxfmt": "^0.65.0",
-    "oxlint": "^1.80.0",
+    "oxfmt": "^0.76.0",
+    "oxlint": "^1.91.0",
     "oxlint-tsgolint": "^0.25.0"
   }
 }
